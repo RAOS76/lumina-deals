@@ -14,8 +14,9 @@ const supabase = (supabaseUrl && supabaseKey)
     ? createClient(supabaseUrl, supabaseKey)
     : null;
 
-// Revalidate cada hora (ISR)
-export const revalidate = 3600;
+// Desactivar caché estática para búsqueda en tiempo real
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export default async function Home({ searchParams }: { searchParams: { q?: string } }) {
     const query = searchParams?.q || '';
@@ -147,7 +148,7 @@ export default async function Home({ searchParams }: { searchParams: { q?: strin
             {/* Grid de Productos */}
             < section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24" >
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                    {products?.filter(p => p.clean_title && p.clean_title !== 'Unknown Title').map((product) => (
+                    {products?.filter(p => p.clean_title && !p.clean_title.includes('Unknown Title')).map((product) => (
                         <ProductCard key={product.id} product={product} />
                     ))}
                 </div>
