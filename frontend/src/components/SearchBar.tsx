@@ -10,7 +10,7 @@ export default function SearchBar() {
     const searchParams = useSearchParams();
     const initialQuery = searchParams.get('q') || '';
     const [text, setText] = useState(initialQuery);
-    const [query] = useDebounce(text, 500);
+    const [query] = useDebounce(text, 300);
 
     useEffect(() => {
         if (query === initialQuery) return; // Evitar loop inicial
