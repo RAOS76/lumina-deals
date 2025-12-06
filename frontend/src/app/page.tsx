@@ -90,7 +90,8 @@ export default async function Home({ searchParams }: { searchParams: { q?: strin
             .order('discount_percentage', { ascending: false });
 
         if (query) {
-            queryBuilder = queryBuilder.ilike('clean_title', `%${query}%`);
+            // Busqueda "fuzzy" en multiples columnas
+            queryBuilder = queryBuilder.or(`clean_title.ilike.%${query}%,ai_summary.ilike.%${query}%,ai_badge.ilike.%${query}%`);
         }
 
         const { data, error } = await queryBuilder;
@@ -100,8 +101,11 @@ export default async function Home({ searchParams }: { searchParams: { q?: strin
     } catch (err) {
         console.warn("⚠️ Usando MOCK DATA (Supabase no conectado o error):", err);
         if (query) {
+            const lowerQuery = query.toLowerCase();
             products = MOCK_PRODUCTS.filter(p =>
-                p.clean_title.toLowerCase().includes(query.toLowerCase())
+                p.clean_title.toLowerCase().includes(lowerQuery) ||
+                p.ai_summary.toLowerCase().includes(lowerQuery) ||
+                p.ai_badge.toLowerCase().includes(lowerQuery)
             );
         } else {
             products = MOCK_PRODUCTS;
