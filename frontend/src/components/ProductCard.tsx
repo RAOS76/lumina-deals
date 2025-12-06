@@ -50,9 +50,13 @@ export default function ProductCard({ product }: ProductProps) {
             <div className="relative h-56 bg-white p-6 flex items-center justify-center overflow-hidden">
                 {/* Usamos mix-blend-multiply para que el fondo blanco de la imagen se funda con el div */}
                 <img
-                    src={product.image_url}
+                    src={product.image_url || 'https://placehold.co/400x400?text=No+Image'}
                     alt={product.clean_title}
                     className="max-h-full max-w-full object-contain mix-blend-multiply transition-transform duration-500 group-hover:scale-110"
+                    onError={(e) => {
+                        e.currentTarget.src = 'https://placehold.co/400x400?text=No+Image';
+                        e.currentTarget.onerror = null; // Previene loop infinito
+                    }}
                 />
 
                 {/* Overlay Gradiente al hacer hover */}
