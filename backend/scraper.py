@@ -1,5 +1,7 @@
 import random
 import time
+import json
+import re
 from playwright.sync_api import sync_playwright
 from fake_useragent import UserAgent
 
@@ -44,6 +46,13 @@ class AmazonScraper:
                 # Extraer items
                 items = page.query_selector_all('div[data-component-type="s-search-result"]')
                 
+                if len(items) == 0:
+                    print(f"[DEBUG] No se encontraron items. Título de la página: '{page.title()}'")
+                    # Check for common blocking text
+                    content = page.content()
+                    if "captcha" in content.lower() or "robot check" in content.lower():
+                         print("[ALERT] DETECTADO BLOQUEO DE ANTIBOT (CAPTCHA)")
+                
                 print(f"[SCRAPER] Encontrados {len(items)} items. Procesando los primeros {max_products}...")
 
                 count = 0
@@ -69,16 +78,36 @@ class AmazonScraper:
                         current_price = 0.0
                         try:
                             if price_whole:
-                                # Limpiar texto (ej: "19\n" -> "19")
-                                whole_text = price_whole.inner_text().replace('\n', '').replace('.', '').strip()
+                                # Amazon a veces pone texto oculto o saltos de linea. Limpieza:
+                                raw_whole = price_whole.inner_text()
+                                whole_text = raw_whole.replace('\n', '').replace('.', '').replace(',', '').strip()
+                                
                                 fraction_text = "00"
                                 if price_fraction:
                                     fraction_text = price_fraction.inner_text().replace('\n', '').strip()
                                 
                                 current_price = float(f"{whole_text}.{fraction_text}")
-                        except ValueError:
-                            print(f"   [WARN] No se pudo parsear precio para {asin}")
-                            continue
+                            else:
+                                # Intentar selector alternativo (precio unico)
+                                alt_price = item.query_selector(".a-price .a-offscreen")
+                                if alt_price:
+                                    alt_text = alt_price.get_attribute("inner_text") or alt_price.inner_text()
+                                    clean_alt = alt_text.replace("$", "").replace(",", "").strip()
+                                    current_price = float(clean_alt)
+                            
+                            # Fallback 3: Regex en todo el texto del item
+                            if current_price == 0.0:
+                                item_text = item.inner_text()
+                                # Buscar patrón $XX.XX o $XX
+                                price_match = re.search(r'\$(\d{1,3}(?:,\d{3})*(?:\.\d{2})?)', item_text)
+                                if price_match:
+                                    price_str = price_match.group(1).replace(',', '')
+                                    current_price = float(price_str)
+                                    print(f"   [INFO] Precio encontrado por Regex: ${current_price}")
+
+                        except Exception as ve:
+                             print(f"   [WARN] Error parseando precio: {ve}")
+                             continue
 
                         # Extraer Precio Original (si existe, tachado)
                         original_price_el = item.query_selector(".a-text-price .a-offscreen")

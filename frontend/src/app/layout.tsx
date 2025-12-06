@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Lumina | Intelligent Deal Discovery",
-  description: "Lumina illuminates the best hidden deals on Amazon using OpenAI.",
+  title: "Lumina Ofertas | Inteligencia Artificial para Cazadores de Ofertas",
+  description: "Descubre las mejores ofertas de Amazon curadas por IA. Lumina Ofertas analiza precios, reseñas y calidad para que compres inteligente.",
   icons: {
     icon: "/icon.svg",
     shortcut: "/icon.svg",
