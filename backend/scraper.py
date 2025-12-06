@@ -107,7 +107,7 @@ class AmazonScraper:
                         product_url = "https://amazon.com" + link_el.get_attribute("href") if link_el else ""
 
                         # Filtrar solo productos con precio y nombre válido
-                        if current_price > 0 and title:
+                        if current_price > 0 and title and title != "Unknown Title":
                             products.append({
                                 "amazon_id": asin,
                                 "raw_title": title,
