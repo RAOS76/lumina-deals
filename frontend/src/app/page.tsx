@@ -10,9 +10,15 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 // Inicialización segura: si faltan keys, supabase será null (evita crash en build)
-const supabase = (supabaseUrl && supabaseKey)
-    ? createClient(supabaseUrl, supabaseKey)
-    : null;
+let supabase: ReturnType<typeof createClient> | null = null;
+
+try {
+    if (supabaseUrl && supabaseKey) {
+        supabase = createClient(supabaseUrl, supabaseKey);
+    }
+} catch (e) {
+    console.warn("⚠️ Falló inicialización de Supabase:", e);
+}
 
 // Desactivar caché estática para búsqueda en tiempo real
 export const dynamic = 'force-dynamic';
