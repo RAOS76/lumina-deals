@@ -99,7 +99,13 @@ export default async function Home({ searchParams }: { searchParams: { q?: strin
         products = data;
     } catch (err) {
         console.warn("⚠️ Usando MOCK DATA (Supabase no conectado o error):", err);
-        products = MOCK_PRODUCTS;
+        if (query) {
+            products = MOCK_PRODUCTS.filter(p =>
+                p.clean_title.toLowerCase().includes(query.toLowerCase())
+            );
+        } else {
+            products = MOCK_PRODUCTS;
+        }
     }
 
     return (
