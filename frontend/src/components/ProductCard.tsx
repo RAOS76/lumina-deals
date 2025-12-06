@@ -18,6 +18,18 @@ interface ProductProps {
     };
 }
 
+const getAffiliateUrl = (url: string) => {
+    try {
+        const urlObj = new URL(url);
+        // Aquí pondrás tu TAG de afiliado real cuando lo tengas
+        // Ejemplo: urlObj.searchParams.set("tag", "lumina-20");
+        urlObj.searchParams.set("tag", "lumina-demo-20"); // Placeholder
+        return urlObj.toString();
+    } catch (e) {
+        return url;
+    }
+};
+
 export default function ProductCard({ product }: ProductProps) {
     // Transformar historial para Tremor
     const chartdata = product.price_history?.map((item: any) => ({
@@ -94,7 +106,7 @@ export default function ProductCard({ product }: ProductProps) {
                     </div>
 
                     <a
-                        href={product.product_url}
+                        href={getAffiliateUrl(product.product_url)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center gap-2 bg-slate-900 text-white px-4 py-2.5 rounded-xl text-sm font-semibold shadow-lg shadow-slate-200 hover:bg-indigo-600 hover:shadow-indigo-200 transition-all duration-300"
