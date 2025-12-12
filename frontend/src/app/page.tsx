@@ -1,7 +1,10 @@
 
 import { createClient } from '@supabase/supabase-js';
-import ProductCard from '../components/ProductCard';
+import DealPost from '../components/DealPost';
 import SearchBar from '../components/SearchBar';
+import MaintenancePage from '../components/MaintenancePage';
+import CookieBanner from '../components/CookieBanner';
+import AdPlaceholder from '../components/AdPlaceholder';
 import { Sparkles } from 'lucide-react';
 import { Suspense } from 'react';
 
@@ -25,6 +28,11 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export default async function Home({ searchParams }: { searchParams: { q?: string } }) {
+    // Check for Maintenance Mode
+    if (process.env.NEXT_PUBLIC_MAINTENANCE_MODE === 'true') {
+        return <MaintenancePage />;
+    }
+
     const query = searchParams?.q || '';
 
     // Datos Mock para Demo
@@ -121,6 +129,8 @@ export default async function Home({ searchParams }: { searchParams: { q?: strin
 
     return (
         <main className="min-h-screen bg-slate-50 font-sans text-slate-900" >
+            <CookieBanner />
+
             {/* Header Minimalista */}
             < header className="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200" >
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
@@ -151,27 +161,48 @@ export default async function Home({ searchParams }: { searchParams: { q?: strin
                 </Suspense>
             </section >
 
-            {/* Grid de Productos */}
-            < section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24" >
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                    {products?.filter(p => p.clean_title && !p.clean_title.includes('Unknown Title')).map((product) => (
-                        <ProductCard key={product.id} product={product} />
-                    ))}
+            {/* Feed de Noticias / Blog */}
+            <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 space-y-12">
+                <div className="flex items-center justify-between border-b border-slate-200 pb-4 mb-8">
+                    <h3 className="text-lg font-semibold text-slate-900">
+                        Últimos Análisis
+                    </h3>
+                    <span className="text-sm text-slate-500">
+                        {products?.length || 0} oportunidades detectadas
+                    </span>
                 </div>
 
-                {
-                    (!products || products.length === 0) && (
-                        <div className="text-center py-20 text-slate-400">
-                            No hay ofertas activas en este momento. Vuelve pronto.
-                        </div>
-                    )
-                }
-            </section >
+                {products?.filter(p => p.clean_title && !p.clean_title.includes('Unknown Title')).map((product, index) => (
+                    <div key={product.id}>
+                        <DealPost product={product} />
+                        {/* Insertar anuncio cada 3 posts */}
+                        {(index + 1) % 3 === 0 && <AdPlaceholder />}
+                    </div>
+                ))}
+
+                {(!products || products.length === 0) && (
+                    <div className="text-center py-20 text-slate-400">
+                        No hay ofertas activas en este momento. Vuelve pronto.
+                    </div>
+                )}
+            </section>
 
             {/* Footer */}
-            < footer className="bg-white border-t border-slate-200 py-8 text-center text-slate-400 text-sm" >
-                <p>© {new Date().getFullYear()} Lumina. Powered by Intelligence.</p>
-            </footer >
-        </main >
+            <footer className="bg-white border-t border-slate-200 py-12 text-center">
+                <div className="max-w-7xl mx-auto px-4">
+                    <div className="flex justify-center gap-6 mb-8 text-sm text-slate-500">
+                        <a href="/about" className="hover:text-indigo-600 transition-colors">Sobre Nosotros</a>
+                        <a href="/privacy" className="hover:text-indigo-600 transition-colors">Privacidad</a>
+                        <a href="/terms" className="hover:text-indigo-600 transition-colors">Términos</a>
+                    </div>
+                    <p className="text-slate-400 text-sm mb-4">
+                        © {new Date().getFullYear()} Lumina. Powered by Intelligence.
+                    </p>
+                    <p className="text-xs text-slate-300 max-w-md mx-auto">
+                        Lumina participa en el Programa de Afiliados de Amazon, un programa de publicidad para afiliados diseñado para ofrecer a sitios web un modo de obtener comisiones por publicidad, publicitando e incluyendo enlaces a Amazon.com.
+                    </p>
+                </div>
+            </footer>
+        </main>
     );
 }
