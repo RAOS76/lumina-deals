@@ -5,9 +5,6 @@ import { ArrowLeft, ExternalLink, Clock, Tag, TrendingDown, Brain, ShoppingBag, 
 import { SparkAreaChart } from '@tremor/react';
 import { getAffiliateUrl } from '@/lib/utils';
 
-// Force dynamic rendering
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
@@ -35,7 +32,11 @@ async function getProduct(slug: string) {
     return data;
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+// Force dynamic rendering to ensure fresh data
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
     const { slug } = await params;
     const product = await getProduct(slug);
     if (!product) return { title: 'Oferta no encontrada' };

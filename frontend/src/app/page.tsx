@@ -1,4 +1,3 @@
-
 import { createClient } from '@supabase/supabase-js';
 import DealPost from '../components/DealPost';
 import SearchBar from '../components/SearchBar';
@@ -27,13 +26,18 @@ try {
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-export default async function Home({ searchParams }: { searchParams: { q?: string } }) {
+export default async function Home({
+    searchParams,
+}: {
+    searchParams: Promise<{ q?: string }>;
+}) {
     // Check for Maintenance Mode
     if (process.env.NEXT_PUBLIC_MAINTENANCE_MODE === 'true') {
         return <MaintenancePage />;
     }
 
-    const query = searchParams?.q || '';
+    const { q } = await searchParams;
+    const query = q || '';
 
     // Datos Mock para Demo
     const MOCK_PRODUCTS = [
@@ -128,38 +132,68 @@ export default async function Home({ searchParams }: { searchParams: { q?: strin
     }
 
     return (
-        <main className="min-h-screen bg-slate-50 font-sans text-slate-900" >
+        <main className="min-h-screen bg-slate-50 font-sans text-slate-900 pt-24" >
             <CookieBanner />
 
-            {/* Header Minimalista */}
-            < header className="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200" >
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                        <div className="bg-indigo-600 p-1.5 rounded-lg">
-                            <Sparkles className="w-5 h-5 text-white" />
-                        </div>
-                        <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-violet-600">
-                            LUMINA OFERTAS
-                        </h1>
-                    </div>
-                    <p className="text-sm text-slate-500 hidden sm:block">
-                        El arte de encontrar lo extraordinario
-                    </p>
-                </div>
-            </header >
+            <CookieBanner />
 
-            {/* Hero Section Simple */}
-            < section className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center" >
-                <h2 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-slate-900 mb-4">
-                    Claridad entre el caos. <span className="text-indigo-600">Ofertas reales.</span>
-                </h2>
-                <p className="text-lg text-slate-600 max-w-2xl mx-auto mb-8">
-                    Lumina utiliza IA avanzada para iluminar las verdaderas oportunidades en Amazon, filtrando miles de productos para entregarte solo lo que brilla.
-                </p>
-                <Suspense fallback={<div className="h-12 bg-slate-100 rounded-xl animate-pulse" />}>
-                    <SearchBar />
-                </Suspense>
-            </section >
+            {/* Hero Section - Joyas del Mercado */}
+            <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+                <div className="text-center mb-16">
+                    <h2 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-slate-900 mb-4">
+                        Claridad entre el caos. <span className="text-indigo-600">Ofertas reales.</span>
+                    </h2>
+                    <p className="text-lg text-slate-600 max-w-2xl mx-auto mb-8">
+                        Lumina utiliza IA avanzada para iluminar las verdaderas oportunidades en Amazon, filtrando miles de productos para entregarte solo lo que brilla.
+                    </p>
+                    <Suspense fallback={<div className="h-12 bg-slate-100 rounded-xl animate-pulse" />}>
+                        <SearchBar />
+                    </Suspense>
+                </div>
+
+                {/* Market Jewels - Dynamic Layout */}
+                <div className="space-y-24">
+                    {products?.filter(p => p.is_featured).map((product, index) => (
+                        <div key={product.id} className={`flex flex-col md:flex-row${index % 2 !== 0 ? '-reverse' : ''} items-center gap-12`}>
+                            <div className="w-full md:w-1/2">
+                                <div className="relative aspect-[4/3] bg-slate-100 rounded-3xl overflow-hidden shadow-2xl border border-slate-200 group">
+                                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                                    <img
+                                        src={product.image_url}
+                                        alt={product.clean_title}
+                                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                    />
+                                    {product.ai_badge && (
+                                        <div className={`absolute top-4 ${index % 2 !== 0 ? 'right-4' : 'left-4'} bg-indigo-600 text-white px-4 py-1 rounded-full text-sm font-bold shadow-lg`}>
+                                            {product.ai_badge}
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                            <div className="w-full md:w-1/2 text-left">
+                                <div className="flex items-center gap-2 mb-4">
+                                    <Sparkles className="w-5 h-5 text-indigo-600" />
+                                    <span className="text-sm font-bold text-indigo-600 uppercase tracking-wider">{product.category || 'Destacado'}</span>
+                                </div>
+                                <h3 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-6 leading-tight">
+                                    {product.clean_title}
+                                </h3>
+                                <div className="prose prose-slate text-lg text-slate-600 mb-8">
+                                    <p className="mb-4">
+                                        {product.ai_summary}
+                                    </p>
+                                </div>
+                                <div className="flex items-center gap-6">
+                                    <a href={`/deal/${product.slug}`} className="bg-slate-900 hover:bg-slate-800 text-white px-8 py-3 rounded-xl font-bold transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                                        Ver Análisis Completo
+                                    </a>
+                                    <span className="text-2xl font-bold text-slate-900">${product.current_price}</span>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </section>
 
             {/* Feed de Noticias / Blog */}
             <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 space-y-12">
@@ -186,23 +220,6 @@ export default async function Home({ searchParams }: { searchParams: { q?: strin
                     </div>
                 )}
             </section>
-
-            {/* Footer */}
-            <footer className="bg-white border-t border-slate-200 py-12 text-center">
-                <div className="max-w-7xl mx-auto px-4">
-                    <div className="flex justify-center gap-6 mb-8 text-sm text-slate-500">
-                        <a href="/about" className="hover:text-indigo-600 transition-colors">Sobre Nosotros</a>
-                        <a href="/privacy" className="hover:text-indigo-600 transition-colors">Privacidad</a>
-                        <a href="/terms" className="hover:text-indigo-600 transition-colors">Términos</a>
-                    </div>
-                    <p className="text-slate-400 text-sm mb-4">
-                        © {new Date().getFullYear()} Lumina. Powered by Intelligence.
-                    </p>
-                    <p className="text-xs text-slate-300 max-w-md mx-auto">
-                        Lumina participa en el Programa de Afiliados de Amazon, un programa de publicidad para afiliados diseñado para ofrecer a sitios web un modo de obtener comisiones por publicidad, publicitando e incluyendo enlaces a Amazon.com.
-                    </p>
-                </div>
-            </footer>
         </main>
     );
 }

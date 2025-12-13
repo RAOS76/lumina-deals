@@ -7,7 +7,12 @@ from supabase import create_client, Client
 from openai import OpenAI
 
 # Cargar variables de entorno
-load_dotenv()
+# Cargar variables de entorno
+# Intentar cargar desde la raíz del proyecto
+load_dotenv(dotenv_path='.env')
+# Si no funciona, intentar ruta relativa (por si se ejecuta desde backend/)
+if not os.getenv("NEXT_PUBLIC_SUPABASE_URL"):
+    load_dotenv(dotenv_path='../.env')
 
 # Configuración
 SUPABASE_URL = os.getenv("NEXT_PUBLIC_SUPABASE_URL")
@@ -34,6 +39,7 @@ except Exception as e:
     openai_client = None
 
 from scraper import AmazonScraper
+from scoring import calculate_lumina_score
 import json 
 
 # ... (Previous imports remain, but 'json' and 'random' might be redundant if not used elsewhere, keeping for safety)
@@ -46,19 +52,29 @@ def get_real_amazon_products():
     scraper = AmazonScraper(headless=True) # Headless=True para prod
     
     # Palabras clave para buscar "gemas ocultas"
-    keywords = [
-        "best tech deals",
-        "wireless headphones sale",
-        "gaming accessories discount",
-        "smart home gadgets under 50"
+    # Palabras clave estructuradas para categorización precisa
+    search_targets = [
+        {"keyword": "best tech deals", "category": "tecnologia", "subcategory": "gadgets"},
+        {"keyword": "wireless headphones sale", "category": "tecnologia", "subcategory": "audio"},
+        {"keyword": "gaming accessories discount", "category": "gaming", "subcategory": "accesorios"},
+        {"keyword": "smart home gadgets under 50", "category": "hogar", "subcategory": "domotica"},
+        {"keyword": "kindle paperwhite deals", "category": "cultura-ocio", "subcategory": "ereaders"},
+        {"keyword": "robot vacuum sale", "category": "hogar", "subcategory": "limpieza"}
     ]
     
     all_products = []
     
-    for kw in keywords:
+    for target in search_targets:
+        kw = target["keyword"]
         try:
             print(f"[MAIN] Buscando: {kw}...")
-            products = scraper.search_products(kw, max_products=3) # 3 por keyword para no tardar mucho en demo
+            products = scraper.search_products(kw, max_products=3)
+            
+            # Asignar categoría y subcategoría a los productos encontrados
+            for p in products:
+                p["category"] = target["category"]
+                p["subcategory"] = target["subcategory"]
+                
             all_products.extend(products)
         except Exception as e:
             print(f"[ERROR] Fallo buscando '{kw}': {e}")
@@ -155,6 +171,14 @@ def upsert_product(product_data, ai_data):
         print(f"[DB Simulacro] Guardando: {ai_data['clean_title']}")
         return
 
+    # Calculate Lumina Score
+    lumina_score = calculate_lumina_score(
+        rating=product_data.get("rating", 0),
+        review_count=product_data.get("review_count", 0),
+        discount_percentage=product_data.get("discount_percentage", 0),
+        sentiment_score=ai_data.get("sentiment_score", 0.5)
+    )
+
     # Combinar datos
     final_data = {
         "amazon_id": product_data["amazon_id"],
@@ -163,13 +187,19 @@ def upsert_product(product_data, ai_data):
         "original_price": product_data["original_price"],
         "current_price": product_data["current_price"],
         "discount_percentage": product_data["discount_percentage"],
+        "rating": product_data.get("rating", 0),
+        "review_count": product_data.get("review_count", 0),
+        "lumina_score": lumina_score,
         "ai_summary": ai_data["ai_summary"],
         "ai_badge": ai_data["ai_badge"],
         "sales_phrase": ai_data["sales_phrase"],
         "sentiment_score": ai_data["sentiment_score"],
         "image_url": product_data["image_url"],
         "product_url": product_data["product_url"],
+        "category": product_data.get("category"),
+        "subcategory": product_data.get("subcategory"),
         "updated_at": datetime.now().isoformat(),
+        "last_analyzed": datetime.now().isoformat(),
         # En un sistema real, haríamos append al historial, aquí lo regeneramos o mockeamos
         "price_history": generate_history_mock(product_data["current_price"])
     }
@@ -202,5 +232,50 @@ def main():
         
     print(">>> Proceso finalizado.")
 
+# --- 4. VERIFICATION ENGINE ---
+def verify_inventory():
+    """Revisa todos los productos en la BD y elimina los que ya no existen en Amazon."""
+    print(">>> Iniciando Verificación de Inventario...")
+    
+    if not supabase:
+        return
+
+    # 1. Obtener todos los productos
+    response = supabase.table("products").select("id, amazon_id, product_url, current_price, clean_title").execute()
+    products = response.data
+    
+    if not products:
+        print("[VERIFY] No hay productos para verificar.")
+        return
+
+    scraper = AmazonScraper(headless=True)
+    
+    for p in products:
+        # Skip products without URL
+        if not p.get("product_url"):
+            continue
+            
+        print(f"[VERIFY] Revisando: {p['clean_title']}...")
+        
+        # Verificar estado en Amazon
+        status = scraper.verify_product(p["product_url"])
+        
+        if not status["available"]:
+            print(f"[DELETE] Eliminando producto no disponible: {p['clean_title']}")
+            supabase.table("products").delete().eq("id", p["id"]).execute()
+        else:
+            # Actualizar precio si cambió
+            new_price = status["price"]
+            if new_price > 0 and new_price != p["current_price"]:
+                print(f"[UPDATE] Precio cambió de ${p['current_price']} a ${new_price}")
+                supabase.table("products").update({"current_price": new_price, "updated_at": datetime.now().isoformat()}).eq("id", p["id"]).execute()
+            else:
+                print("[OK] Precio sin cambios.")
+                
+    print(">>> Verificación de Inventario Completada.")
+
 if __name__ == "__main__":
+    # Ejecutar scraping primero
     main()
+    # Luego verificar inventario existente
+    verify_inventory()
