@@ -2,30 +2,71 @@ import React from 'react';
 
 export default function PrivacyPage() {
     return (
-        <main className="max-w-3xl mx-auto px-4 py-12 prose prose-slate">
-            <h1>Política de Privacidad</h1>
-            <p>Última actualización: {new Date().toLocaleDateString()}</p>
+        <div className="max-w-4xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
+            <h1 className="text-3xl font-bold text-slate-900 mb-8">Política de Privacidad</h1>
 
-            <h2>1. Introducción</h2>
-            <p>Bienvenido a Lumina Ofertas. Nos comprometemos a proteger su privacidad. Esta política explica cómo recopilamos, usamos y compartimos su información personal cuando visita nuestro sitio web.</p>
+            <div className="prose prose-slate max-w-none">
+                <p className="text-slate-600 mb-6">
+                    Última actualización: {new Date().toLocaleDateString()}
+                </p>
 
-            <h2>2. Información que recopilamos</h2>
-            <p>Podemos recopilar información sobre usted de varias maneras, incluyendo:</p>
-            <ul>
-                <li>Información que nos proporciona directamente.</li>
-                <li>Información recopilada automáticamente a través de cookies y tecnologías similares.</li>
-            </ul>
+                <section className="mb-8">
+                    <h2 className="text-xl font-bold text-slate-900 mb-4">1. Introducción</h2>
+                    <p className="text-slate-600">
+                        En LUMINA ("nosotros", "nuestro"), respetamos su privacidad y nos comprometemos a proteger sus datos personales.
+                        Esta política de privacidad explica cómo recopilamos, usamos y protegemos su información cuando visita nuestro sitio web.
+                    </p>
+                </section>
 
-            <h2>3. Uso de Cookies y Google AdSense</h2>
-            <p>Utilizamos cookies para mejorar su experiencia y mostrar anuncios relevantes. Trabajamos con proveedores externos, incluido Google, que utilizan cookies para publicar anuncios basados en sus visitas anteriores a nuestro sitio web o a otros sitios web.</p>
-            <p>El uso de cookies de publicidad de Google permite a Google y a sus socios mostrar anuncios a los usuarios basados en sus visitas a sus sitios y/o a otros sitios en Internet.</p>
-            <p>Los usuarios pueden inhabilitar la publicidad personalizada visitando <a href="https://myadcenter.google.com/" target="_blank" rel="noopener noreferrer">Configuración de anuncios</a>.</p>
+                <section className="mb-8">
+                    <h2 className="text-xl font-bold text-slate-900 mb-4">2. Información que recopilamos</h2>
+                    <p className="text-slate-600 mb-4">
+                        Podemos recopilar la siguiente información:
+                    </p>
+                    <ul className="list-disc pl-5 text-slate-600 space-y-2">
+                        <li>Información de contacto (correo electrónico) si se suscribe a nuestro boletín.</li>
+                        <li>Datos de navegación y uso del sitio web a través de cookies.</li>
+                        <li>Información técnica como su dirección IP y tipo de navegador.</li>
+                    </ul>
+                </section>
 
-            <h2>4. Enlaces de Afiliados</h2>
-            <p>Lumina Ofertas participa en el Programa de Afiliados de Amazon, un programa de publicidad para afiliados diseñado para ofrecer a sitios web un modo de obtener comisiones por publicidad, publicitando e incluyendo enlaces a Amazon.com.</p>
+                <section className="mb-8">
+                    <h2 className="text-xl font-bold text-slate-900 mb-4">3. Uso de la información</h2>
+                    <p className="text-slate-600 mb-4">
+                        Utilizamos su información para:
+                    </p>
+                    <ul className="list-disc pl-5 text-slate-600 space-y-2">
+                        <li>Enviarle ofertas y actualizaciones si se ha suscrito.</li>
+                        <li>Mejorar nuestro sitio web y la experiencia del usuario.</li>
+                        <li>Analizar tendencias y estadísticas de uso.</li>
+                    </ul>
+                </section>
 
-            <h2>5. Contacto</h2>
-            <p>Si tiene preguntas sobre esta política, contáctenos a través de nuestro sitio web.</p>
-        </main>
+                <section className="mb-8">
+                    <h2 className="text-xl font-bold text-slate-900 mb-4">4. Cookies y Publicidad</h2>
+                    <p className="text-slate-600 mb-4">
+                        Utilizamos cookies para mejorar su experiencia. Además, utilizamos servicios de terceros como Google AdSense para mostrar anuncios.
+                    </p>
+                    <p className="text-slate-600 mb-4">
+                        Google utiliza cookies para mostrar anuncios basados en sus visitas anteriores a este y otros sitios web.
+                        Los usuarios pueden inhabilitar la publicidad personalizada visitando la Configuración de anuncios de Google.
+                    </p>
+                </section>
+
+                <section className="mb-8">
+                    <h2 className="text-xl font-bold text-slate-900 mb-4">5. Enlaces de Afiliados</h2>
+                    <p className="text-slate-600">
+                        LUMINA participa en el Programa de Afiliados de Amazon Services LLC, un programa de publicidad de afiliados diseñado para proporcionar un medio para que los sitios ganen tarifas de publicidad mediante publicidad y enlaces a Amazon.com.
+                    </p>
+                </section>
+
+                <section className="mb-8">
+                    <h2 className="text-xl font-bold text-slate-900 mb-4">6. Contacto</h2>
+                    <p className="text-slate-600">
+                        Si tiene preguntas sobre esta política de privacidad, puede contactarnos a través de nuestro formulario de contacto o enviando un correo a info@lumina.com.
+                    </p>
+                </section>
+            </div>
+        </div>
     );
 }

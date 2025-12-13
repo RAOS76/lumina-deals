@@ -23,15 +23,12 @@ export default function Footer() {
                     <p className="text-gray-500 text-sm">
                         © {new Date().getFullYear()} Lumina Ofertas. Todos los derechos reservados.
                     </p>
-                    <div className="flex gap-6 text-sm text-gray-400">
-                        <Link href="/privacy" className="hover:text-white transition-colors">
-                            Privacidad
+                    <div className="flex space-x-6 mt-4 md:mt-0">
+                        <Link href="/privacy" className="text-sm text-slate-500 hover:text-indigo-600 transition-colors">
+                            Política de Privacidad
                         </Link>
-                        <Link href="/terms" className="hover:text-white transition-colors">
-                            Términos
-                        </Link>
-                        <Link href="/about" className="hover:text-white transition-colors">
-                            Sobre Nosotros
+                        <Link href="/terms" className="text-sm text-slate-500 hover:text-indigo-600 transition-colors">
+                            Términos de Uso
                         </Link>
                     </div>
                 </div>

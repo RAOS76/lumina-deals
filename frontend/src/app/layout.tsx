@@ -40,7 +40,6 @@ export default function RootLayout({
         <Navbar />
         {children}
         <Footer />
-        <FloatingNewsletter />
       </body>
     </html>
   );
