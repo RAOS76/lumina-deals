@@ -10,15 +10,16 @@ export default function NewsletterPopup() {
 
     useEffect(() => {
         // Check if already seen
-        const hasSeenPopup = localStorage.getItem('lumina_newsletter_seen');
+        // Cambiamos la key para forzar que salga de nuevo en esta versión
+        const hasSeenPopup = localStorage.getItem('lumina_newsletter_v2');
 
         if (!hasSeenPopup) {
-            // Show after 5 seconds
+            // Show after 2 seconds (faster for testing)
             const timer = setTimeout(() => {
                 setShouldRender(true);
                 // Small delay for animation
                 setTimeout(() => setIsVisible(true), 100);
-            }, 5000);
+            }, 2000);
 
             return () => clearTimeout(timer);
         }
@@ -27,7 +28,7 @@ export default function NewsletterPopup() {
     const handleClose = () => {
         setIsVisible(false);
         setTimeout(() => setShouldRender(false), 300); // Wait for animation
-        localStorage.setItem('lumina_newsletter_seen', 'true');
+        localStorage.setItem('lumina_newsletter_v2', 'true');
     };
 
     if (!shouldRender) return null;
