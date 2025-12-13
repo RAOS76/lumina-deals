@@ -40,6 +40,7 @@ export default function RootLayout({
         <Navbar />
         {children}
         <Footer />
+        <NewsletterPopup />
       </body>
     </html>
   );
