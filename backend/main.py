@@ -53,13 +53,39 @@ def get_real_amazon_products():
     
     # Palabras clave para buscar "gemas ocultas"
     # Palabras clave estructuradas para categorización precisa
+    # Palabras clave estructuradas para categorización precisa
     search_targets = [
+        # TECNOLOGÍA
         {"keyword": "best tech deals", "category": "tecnologia", "subcategory": "gadgets"},
         {"keyword": "wireless headphones sale", "category": "tecnologia", "subcategory": "audio"},
-        {"keyword": "gaming accessories discount", "category": "gaming", "subcategory": "accesorios"},
+        {"keyword": "bluetooth speakers discount", "category": "tecnologia", "subcategory": "audio"},
+        {"keyword": "laptop deals under 500", "category": "tecnologia", "subcategory": "computacion"},
+        {"keyword": "4k monitor sale", "category": "tecnologia", "subcategory": "computacion"},
+        {"keyword": "camera accessories deals", "category": "tecnologia", "subcategory": "fotografia"},
+        
+        # HOGAR
         {"keyword": "smart home gadgets under 50", "category": "hogar", "subcategory": "domotica"},
-        {"keyword": "kindle paperwhite deals", "category": "cultura-ocio", "subcategory": "ereaders"},
-        {"keyword": "robot vacuum sale", "category": "hogar", "subcategory": "limpieza"}
+        {"keyword": "robot vacuum sale", "category": "hogar", "subcategory": "limpieza"},
+        {"keyword": "air fryer deals", "category": "hogar", "subcategory": "cocina"},
+        {"keyword": "coffee maker discount", "category": "hogar", "subcategory": "cocina"},
+        {"keyword": "led strip lights", "category": "hogar", "subcategory": "decoracion"},
+        
+        # GAMING
+        {"keyword": "gaming accessories discount", "category": "gaming", "subcategory": "accesorios"},
+        {"keyword": "mechanical keyboard sale", "category": "gaming", "subcategory": "pc-gaming"},
+        {"keyword": "gaming mouse deals", "category": "gaming", "subcategory": "pc-gaming"},
+        {"keyword": "ps5 accessories", "category": "gaming", "subcategory": "consolas"},
+        {"keyword": "nintendo switch games sale", "category": "gaming", "subcategory": "juegos"},
+        
+        # MODA
+        {"keyword": "mens watches sale", "category": "moda", "subcategory": "accesorios"},
+        {"keyword": "womens handbags sale", "category": "moda", "subcategory": "accesorios"},
+        {"keyword": "running shoes deals", "category": "moda", "subcategory": "calzado"},
+        
+        # SALUD & DEPORTE
+        {"keyword": "yoga mat sale", "category": "salud", "subcategory": "deporte"},
+        {"keyword": "resistance bands set", "category": "salud", "subcategory": "deporte"},
+        {"keyword": "electric toothbrush deals", "category": "salud", "subcategory": "cuidado-personal"}
     ]
     
     all_products = []

@@ -5,6 +5,7 @@ import AdSenseScript from "@/components/AdSenseScript";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import NewsletterPopup from "@/components/NewsletterPopup";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,6 +37,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <GoogleAnalytics />
         <AdSenseScript />
         <Navbar />
         {children}
