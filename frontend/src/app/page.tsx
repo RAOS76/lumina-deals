@@ -32,11 +32,12 @@ export default async function Home({
     searchParams: Promise<{ q?: string }>;
 }) {
     // Check for Maintenance Mode
-    if (process.env.NEXT_PUBLIC_MAINTENANCE_MODE === 'true') {
+    // Permite saltar el modo mantenimiento con ?bypass=lumina_preview
+    const { q, bypass } = await searchParams;
+
+    if (process.env.NEXT_PUBLIC_MAINTENANCE_MODE === 'true' && bypass !== 'lumina_preview') {
         return <MaintenancePage />;
     }
-
-    const { q } = await searchParams;
     const query = q || '';
 
     // Datos Mock para Demo
