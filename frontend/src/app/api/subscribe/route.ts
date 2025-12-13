@@ -43,7 +43,7 @@ export async function POST(request: Request) {
         if (resend) {
             try {
                 await resend.emails.send({
-                    from: 'Lumina <onboarding@resend.dev>', // Default Resend testing domain
+                    from: 'Lumina <hola@luminaofertas.com>',
                     to: email,
                     subject: '¡Bienvenido a Lumina Ofertas! ✨',
                     html: WelcomeEmailTemplate(email),
