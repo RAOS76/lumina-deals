@@ -183,15 +183,22 @@ export default function Navbar() {
                     </div>
                 </nav>
 
-                {/* Mobile Menu Overlay - Full Screen Premium Design */}
+                {/* Mobile Menu Overlay - SOLID BLACK NO TRANSPARENCY */}
                 <div
-                    className={`md:hidden fixed inset-0 z-[100] transition-all duration-300 ease-in-out ${isOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
+                    className={`md:hidden fixed inset-0 z-[100] transition-opacity duration-300 ${isOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'}`}
                     style={{
-                        background: 'linear-gradient(180deg, #000000 0%, #0a0a0a 100%)',
+                        backgroundColor: '#000000',
+                        backgroundImage: 'none',
                     }}
                 >
-                    {/* Internal Mobile Header with Gradient */}
-                    <div className="flex justify-between items-center px-6 h-20 border-b border-white/10 bg-gradient-to-r from-indigo-600/10 to-violet-600/10">
+                    {/* Internal Mobile Header - SOLID */}
+                    <div
+                        className="flex justify-between items-center px-6 h-20 border-b"
+                        style={{
+                            backgroundColor: '#0a0a0a',
+                            borderBottomColor: '#333333',
+                        }}
+                    >
                         <div className="flex items-center gap-3">
                             <div className="relative">
                                 <div className="absolute -inset-1 bg-gradient-to-r from-indigo-600 to-violet-600 rounded-lg blur opacity-50"></div>
@@ -199,31 +206,41 @@ export default function Navbar() {
                                     <Sparkles className="w-5 h-5 text-white" />
                                 </div>
                             </div>
-                            <span className="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+                            <span className="text-2xl font-extrabold tracking-tight text-white">
                                 LUMINA
                             </span>
                         </div>
                         <button
                             onClick={() => setIsOpen(false)}
-                            className="p-2 rounded-xl text-white hover:bg-white/10 transition-all active:scale-95"
+                            className="p-2 rounded-xl text-white hover:bg-gray-800 transition-all active:scale-95"
                         >
                             <X className="w-7 h-7" />
                         </button>
                     </div>
 
-                    <div className="h-[calc(100vh-80px)] overflow-y-auto">
+                    <div
+                        className="h-[calc(100vh-80px)] overflow-y-auto"
+                        style={{ backgroundColor: '#000000' }}
+                    >
                         <div className="px-6 py-8 space-y-1">
                             {CATEGORIES.map((category, idx) => (
                                 <div key={category.slug} className="mb-2">
                                     <button
                                         onClick={() => setActiveCategory(activeCategory === category.slug ? null : category.slug)}
-                                        className="w-full flex items-center justify-between py-5 px-4 text-left group rounded-2xl hover:bg-white/5 transition-all"
+                                        className="w-full flex items-center justify-between py-5 px-4 text-left group rounded-2xl hover:bg-gray-900 transition-all"
+                                        style={{ backgroundColor: activeCategory === category.slug ? '#1a1a1a' : 'transparent' }}
                                     >
-                                        <span className={`text-xl font-bold transition-all ${activeCategory === category.slug ? 'text-transparent bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text' : 'text-white'}`}>
+                                        <span
+                                            className="text-xl font-bold"
+                                            style={{
+                                                color: activeCategory === category.slug ? '#818cf8' : '#ffffff'
+                                            }}
+                                        >
                                             {category.name}
                                         </span>
                                         <ChevronDown
-                                            className={`w-6 h-6 transition-all duration-300 ${activeCategory === category.slug ? 'rotate-180 text-indigo-400' : 'text-gray-500'}`}
+                                            className={`w-6 h-6 transition-all duration-300 ${activeCategory === category.slug ? 'rotate-180' : ''}`}
+                                            style={{ color: activeCategory === category.slug ? '#818cf8' : '#9ca3af' }}
                                         />
                                     </button>
 
@@ -232,7 +249,11 @@ export default function Navbar() {
                                             <Link
                                                 key={sub.slug}
                                                 href={`/category/${category.slug}/${sub.slug}`}
-                                                className="flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-white/5 to-white/[0.02] hover:from-indigo-600/20 hover:to-violet-600/20 active:scale-[0.97] transition-all border border-white/10 hover:border-indigo-500/30 ml-4"
+                                                className="flex items-center justify-between p-4 rounded-xl hover:bg-gray-900 active:scale-[0.97] transition-all border ml-4"
+                                                style={{
+                                                    backgroundColor: '#1a1a1a',
+                                                    borderColor: '#333333'
+                                                }}
                                                 onClick={() => setIsOpen(false)}
                                             >
                                                 <span className="text-gray-200 font-semibold text-base">{sub.name}</span>
@@ -248,7 +269,11 @@ export default function Navbar() {
                         <div className="px-6 pb-4">
                             <Link
                                 href="/blog"
-                                className="flex items-center justify-between py-5 px-4 rounded-2xl bg-gradient-to-r from-white/5 to-white/[0.02] hover:from-indigo-600/20 hover:to-violet-600/20 border border-white/10 hover:border-indigo-500/30 transition-all active:scale-[0.97]"
+                                className="flex items-center justify-between py-5 px-4 rounded-2xl hover:bg-gray-900 border transition-all active:scale-[0.97]"
+                                style={{
+                                    backgroundColor: '#1a1a1a',
+                                    borderColor: '#333333'
+                                }}
                                 onClick={() => setIsOpen(false)}
                             >
                                 <span className="text-xl font-bold text-white">Blog</span>
@@ -270,10 +295,10 @@ export default function Navbar() {
                             </button>
                         </div>
 
-                        {/* Version Indicator (Temporary) */}
+                        {/* Version Indicator */}
                         <div className="px-6 pb-8">
-                            <p className="text-center text-xs text-gray-600 font-mono">
-                                v0.1.12-PREMIUM
+                            <p className="text-center text-sm font-bold text-white bg-indigo-600 py-2 rounded-lg">
+                                v0.1.13-SOLID
                             </p>
                         </div>
                     </div>
