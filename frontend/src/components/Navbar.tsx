@@ -97,7 +97,7 @@ export default function Navbar() {
                         </div>
 
                         {/* Desktop Menu */}
-                        <div className="hidden sm:flex items-center space-x-1">
+                        <div className="hidden md:flex items-center space-x-1">
                             {CATEGORIES.map((category) => (
                                 <div
                                     key={category.slug}
