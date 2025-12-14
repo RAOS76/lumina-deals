@@ -181,7 +181,7 @@ export default function Navbar() {
                 </nav>
 
                 {/* Mobile Menu Overlay */}
-                <div className={`md:hidden fixed inset-0 z-40 bg-white/95 backdrop-blur-xl transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'} top-20`}>
+                <div className={`md:hidden fixed inset-0 z-40 bg-slate-50/98 backdrop-blur-xl border-t border-slate-200 shadow-inner transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'} top-20`}>
                     <div className="h-full overflow-y-auto pb-32">
                         <div className="px-4 py-6 space-y-2">
                             {CATEGORIES.map((category) => (
