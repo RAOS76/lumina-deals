@@ -1,6 +1,6 @@
 {
   "name": "frontend",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -11,6 +11,7 @@
   "dependencies": {
     "@supabase/ssr": "^0.8.0",
     "@supabase/supabase-js": "^2.86.2",
+    "@tailwindcss/typography": "^0.5.19",
     "@tremor/react": "^3.18.7",
     "autoprefixer": "^10.4.22",
     "cheerio": "^1.1.2",
@@ -20,6 +21,7 @@
     "postcss": "^8.5.6",
     "react": "19.2.0",
     "react-dom": "19.2.0",
+    "react-markdown": "^10.1.0",
     "resend": "^6.6.0",
     "tailwind-merge": "^3.4.0",
     "use-debounce": "^10.0.6"
