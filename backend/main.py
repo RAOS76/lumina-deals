@@ -85,7 +85,13 @@ def get_real_amazon_products():
         # SALUD & DEPORTE
         {"keyword": "yoga mat sale", "category": "salud", "subcategory": "deporte"},
         {"keyword": "resistance bands set", "category": "salud", "subcategory": "deporte"},
-        {"keyword": "electric toothbrush deals", "category": "salud", "subcategory": "cuidado-personal"}
+        {"keyword": "electric toothbrush deals", "category": "salud", "subcategory": "cuidado-personal"},
+        
+        # OFICINA
+        {"keyword": "ergonomic office chair", "category": "oficina", "subcategory": "muebles"},
+        {"keyword": "standing desk converter", "category": "oficina", "subcategory": "muebles"},
+        {"keyword": "office monitor stand", "category": "oficina", "subcategory": "accesorios"},
+        {"keyword": "wireless mouse for laptop", "category": "oficina", "subcategory": "perifericos"}
     ]
     
     all_products = []
@@ -95,6 +101,7 @@ def get_real_amazon_products():
         try:
             print(f"[MAIN] Buscando: {kw}...")
             products = scraper.search_products(kw, max_products=3)
+            print(f"[MAIN] Encontrados {len(products)} productos para '{kw}'")
             
             # Asignar categoría y subcategoría a los productos encontrados
             for p in products:
@@ -107,6 +114,7 @@ def get_real_amazon_products():
             
     # Eliminar duplicados por ASIN
     unique_products = {p['amazon_id']: p for p in all_products}.values()
+    print(f"[MAIN] Total productos únicos encontrados: {len(unique_products)}")
     return list(unique_products)
 
 # --- 2. AI ANALYSIS ENGINE (OpenAI) ---
@@ -205,11 +213,16 @@ def upsert_product(product_data, ai_data):
         sentiment_score=ai_data.get("sentiment_score", 0.5)
     )
 
+    # Generate slug from clean title
+    from slugify import slugify
+    slug = slugify(ai_data["clean_title"])
+
     # Combinar datos
     final_data = {
         "amazon_id": product_data["amazon_id"],
         "title": product_data["raw_title"], # Título original para referencia
         "clean_title": ai_data["clean_title"],
+        "slug": slug,
         "original_price": product_data["original_price"],
         "current_price": product_data["current_price"],
         "discount_percentage": product_data["discount_percentage"],
@@ -249,14 +262,46 @@ def main():
         return
     
     # 2. Procesar cada uno
+    
+    # Límites y Contadores
+    MAX_PRODUCTS_PER_CATEGORY = 5
+    MIN_DISCOUNT = 10
+    MIN_RATING = 4.0
+    
+    category_counts = {}
+    
+    print(f"[CONFIG] Filtros: Descuento > {MIN_DISCOUNT}%, Rating > {MIN_RATING}, Max/Cat: {MAX_PRODUCTS_PER_CATEGORY}")
+
     for p in raw_products:
-        # Analizar
-        ai_result = analyze_product_with_ai(p)
+        cat = p.get("category", "Uncategorized")
+        current_count = category_counts.get(cat, 0)
         
-        # Guardar
+        # 1. Check Category Limit
+        if current_count >= MAX_PRODUCTS_PER_CATEGORY:
+            print(f"[SKIP] Límite alcanzado para {cat} ({current_count}/{MAX_PRODUCTS_PER_CATEGORY})")
+            continue
+
+        # 2. Check Quality Filters
+        discount = p.get("discount_percentage", 0)
+        rating = p.get("rating", 0)
+        
+        if discount < MIN_DISCOUNT:
+            print(f"[SKIP] Descuento bajo ({discount}%) para: {p['raw_title'][:30]}...")
+            continue
+            
+        if rating < MIN_RATING:
+            print(f"[SKIP] Rating bajo ({rating}) para: {p['raw_title'][:30]}...")
+            continue
+
+        # 3. Analyze & Save (Only good products)
+        ai_result = analyze_product_with_ai(p)
         upsert_product(p, ai_result)
         
+        # Increment counter
+        category_counts[cat] = current_count + 1
+        
     print(">>> Proceso finalizado.")
+    print("Resumen por categoría:", category_counts)
 
 # --- 4. VERIFICATION ENGINE ---
 def verify_inventory():
@@ -290,13 +335,24 @@ def verify_inventory():
             print(f"[DELETE] Eliminando producto no disponible: {p['clean_title']}")
             supabase.table("products").delete().eq("id", p["id"]).execute()
         else:
-            # Actualizar precio si cambió
+            # Actualizar precio y BSR
             new_price = status["price"]
+            bsr = status.get("sales_rank")
+            
+            updates = {"updated_at": datetime.now().isoformat()}
+            
             if new_price > 0 and new_price != p["current_price"]:
                 print(f"[UPDATE] Precio cambió de ${p['current_price']} a ${new_price}")
-                supabase.table("products").update({"current_price": new_price, "updated_at": datetime.now().isoformat()}).eq("id", p["id"]).execute()
+                updates["current_price"] = new_price
+                
+            if bsr:
+                print(f"[UPDATE] BSR encontrado: {bsr}")
+                updates["sales_rank"] = bsr
+                
+            if len(updates) > 1: # Si hay algo más que updated_at
+                supabase.table("products").update(updates).eq("id", p["id"]).execute()
             else:
-                print("[OK] Precio sin cambios.")
+                print("[OK] Sin cambios relevantes.")
                 
     print(">>> Verificación de Inventario Completada.")
 

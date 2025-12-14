@@ -144,22 +144,37 @@ class AmazonScraper:
 
                                 # Rating
                                 try:
+                                    rating = 0.0
+                                    # Try multiple selectors
                                     rating_el = item.query_selector("i[class*='a-icon-star'] span.a-icon-alt")
-                                    rating_text = rating_el.inner_text() if rating_el else "0"
-                                    # "4.5 out of 5 stars" -> 4.5
-                                    rating = float(rating_text.split(" ")[0])
+                                    if not rating_el:
+                                        rating_el = item.query_selector("span[aria-label*='stars']")
+                                    
+                                    if rating_el:
+                                        rating_text = rating_el.inner_text() or rating_el.get_attribute("aria-label")
+                                        # "4.5 out of 5 stars" -> 4.5
+                                        # "4.5 de 5 estrellas" -> 4.5
+                                        if rating_text:
+                                            first_part = rating_text.split(" ")[0].replace(",", ".")
+                                            rating = float(first_part)
                                 except:
                                     rating = 0.0
 
                                 # Review Count
                                 try:
+                                    review_count = 0
                                     review_el = item.query_selector("span.a-size-base.s-underline-text")
                                     if not review_el:
-                                        review_el = item.query_selector("span[aria-label*='stars'] + span")
+                                        # Fallback: Look for the link next to stars
+                                        review_el = item.query_selector("div.a-row.a-size-small span.a-size-base")
                                     
-                                    review_text = review_el.inner_text() if review_el else "0"
-                                    # "1,234" -> 1234
-                                    review_count = int(review_text.replace(",", "").replace(".", ""))
+                                    if review_el:
+                                        review_text = review_el.inner_text().strip()
+                                        # "1,234" -> 1234
+                                        # "(1.234)" -> 1234
+                                        clean_text = review_text.replace(",", "").replace(".", "").replace("(", "").replace(")", "")
+                                        if clean_text.isdigit():
+                                            review_count = int(clean_text)
                                 except:
                                     review_count = 0
 
@@ -209,7 +224,30 @@ class AmazonScraper:
 
                                 # Link
                                 link_el = item.query_selector("h2 a")
-                                product_url = "https://amazon.com" + link_el.get_attribute("href") if link_el else ""
+                                if link_el:
+                                    href = link_el.get_attribute("href")
+                                    if href.startswith("http"):
+                                        product_url = href
+                                    else:
+                                        product_url = "https://www.amazon.com" + href
+                                else:
+                                    # Fallback using ASIN
+                                    product_url = f"https://www.amazon.com/dp/{asin}"
+
+                                # Coupon
+                                coupon_text = None
+                                try:
+                                    # Look for coupon badge in search results
+                                    coupon_el = item.query_selector(".s-coupon-unclipped, .s-coupon-clipped, span.s-coupon-highlight-color")
+                                    if coupon_el:
+                                        # Usually text is inside a span or the element itself
+                                        coupon_text = coupon_el.inner_text().strip()
+                                        # Sometimes it says "Save $10 with coupon", sometimes just "Save 10%"
+                                        # Let's clean it up if needed, or keep raw
+                                        if "coupon" not in coupon_text.lower() and "cupón" not in coupon_text.lower():
+                                            coupon_text = f"Cupón: {coupon_text}"
+                                except:
+                                    pass
 
                                 # Validation
                                 if current_price > 0 and title != "Unknown Title":
@@ -223,7 +261,8 @@ class AmazonScraper:
                                         "product_url": product_url,
                                         "category": keyword,
                                         "rating": rating,
-                                        "review_count": review_count
+                                        "review_count": review_count,
+                                        "coupon_text": coupon_text
                                     })
                                     count += 1
                                     print(f"   -> [{asin}] ${current_price} - {title[:30]}...")
@@ -292,9 +331,28 @@ class AmazonScraper:
                 if price_el:
                     txt = price_el.inner_text()
                     price = self._parse_price_text(txt)
+
+                # 4. Get Best Sellers Rank (BSR)
+                bsr = None
+                try:
+                    # Try multiple selectors for BSR
+                    bsr_el = page.query_selector("#SalesRank") or \
+                             page.query_selector("th:has-text('Best Sellers Rank') + td") or \
+                             page.query_selector("span:has-text('Best Sellers Rank')")
+                    
+                    if bsr_el:
+                        bsr_text = bsr_el.inner_text()
+                        # Extract just the first number/category e.g. "#45 in Tools"
+                        # Clean up text
+                        bsr = bsr_text.split("(")[0].strip()
+                        # Limit length
+                        if len(bsr) > 100:
+                            bsr = bsr[:100]
+                except:
+                    pass
                 
-                print(f"[SCRAPER] Producto disponible. Precio: ${price}")
-                return {"available": True, "price": price}
+                print(f"[SCRAPER] Producto disponible. Precio: ${price}. BSR: {bsr}")
+                return {"available": True, "price": price, "sales_rank": bsr}
 
             except Exception as e:
                 print(f"[WARN] Error verificando producto: {e}")
