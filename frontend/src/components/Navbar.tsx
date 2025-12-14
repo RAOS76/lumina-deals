@@ -181,7 +181,10 @@ export default function Navbar() {
                 </nav>
 
                 {/* Mobile Menu Overlay */}
-                <div className={`md:hidden fixed inset-0 z-50 bg-slate-900 border-t border-slate-800 shadow-inner transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'} top-20`}>
+                <div
+                    className={`md:hidden fixed inset-0 z-50 bg-slate-900 border-t border-slate-800 shadow-inner transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'} top-20`}
+                    style={{ backgroundColor: '#0f172a' }} // Force Slate-900
+                >
                     <div className="h-full overflow-y-auto pb-32">
                         <div className="px-4 py-6 space-y-2">
                             {CATEGORIES.map((category) => (
@@ -216,19 +219,22 @@ export default function Navbar() {
                         </div>
 
                         {/* Sticky Bottom Actions */}
-                        <div className="absolute bottom-0 left-0 w-full p-4 bg-white border-t border-slate-100 pb-8">
+                        <div
+                            className="absolute bottom-0 left-0 w-full p-4 bg-slate-900 border-t border-slate-800 pb-8"
+                            style={{ backgroundColor: '#0f172a' }} // Force Slate-900
+                        >
                             <button
                                 onClick={() => {
                                     setIsOpen(false);
                                     setIsNewsletterOpen(true);
                                 }}
-                                className="w-full bg-slate-900 hover:bg-indigo-600 text-white py-4 rounded-xl font-bold text-lg shadow-lg transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+                                className="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-4 rounded-xl font-bold text-lg shadow-lg transition-all active:scale-[0.98] flex items-center justify-center gap-2"
                             >
                                 <span className="text-xl">📩</span>
                                 Suscríbete al Newsletter
                             </button>
                             <p className="text-center text-xs text-slate-500 mt-4 font-mono">
-                                v0.1.6 (Dark Mode Active)
+                                v0.1.7 (Forced Dark Styles)
                             </p>
                         </div>
                     </div>
