@@ -78,7 +78,7 @@ export default function Navbar() {
 
     return (
         <>
-            <header className="fixed w-full top-0 z-50 transition-all duration-300 bg-white/70 backdrop-blur-xl backdrop-saturate-150 border-b-4 border-red-600 shadow-sm supports-[backdrop-filter]:bg-white/60">
+            <header className="fixed w-full top-0 z-50 transition-all duration-300 bg-white/70 backdrop-blur-xl backdrop-saturate-150 border-b border-slate-200/50 shadow-sm supports-[backdrop-filter]:bg-white/60">
                 <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-20 items-center">
                         {/* Logo */}
@@ -91,13 +91,13 @@ export default function Navbar() {
                                     </div>
                                 </div>
                                 <span className="text-2xl font-extrabold tracking-tight text-slate-900 group-hover:text-indigo-600 transition-colors">
-                                    LUMINA (DEBUG LAYOUT)
+                                    LUMINA
                                 </span>
                             </Link>
                         </div>
 
-                        {/* Desktop Menu - FORCED FLEX */}
-                        <div className="flex items-center space-x-1">
+                        {/* Desktop Menu */}
+                        <div className="hidden md:flex items-center space-x-1">
                             {CATEGORIES.map((category) => (
                                 <div
                                     key={category.slug}
