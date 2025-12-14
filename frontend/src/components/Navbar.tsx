@@ -227,6 +227,9 @@ export default function Navbar() {
                                 <span className="text-xl">📩</span>
                                 Suscríbete al Newsletter
                             </button>
+                            <p className="text-center text-xs text-slate-500 mt-4 font-mono">
+                                v0.1.6 (Dark Mode Active)
+                            </p>
                         </div>
                     </div>
                 </div>
