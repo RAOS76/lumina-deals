@@ -91,13 +91,13 @@ export default function Navbar() {
                                     </div>
                                 </div>
                                 <span className="text-2xl font-extrabold tracking-tight text-slate-900 group-hover:text-indigo-600 transition-colors">
-                                    LUMINA (DEBUG)
+                                    LUMINA
                                 </span>
                             </Link>
                         </div>
 
-                        {/* Desktop Menu - FORCED VISIBLE */}
-                        <div className="flex items-center space-x-1">
+                        {/* Desktop Menu */}
+                        <div className="hidden sm:flex items-center space-x-1">
                             {CATEGORIES.map((category) => (
                                 <div
                                     key={category.slug}
