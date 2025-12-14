@@ -174,11 +174,11 @@ export default async function DealPage({ params }: { params: Promise<{ slug: str
 
                             <div className="flex items-baseline gap-3 mb-8">
                                 <span className="text-4xl font-bold text-slate-900">
-                                    ${product.current_price}
+                                    ${product.current_price.toFixed(2)}
                                 </span>
                                 {product.original_price > product.current_price && (
                                     <span className="text-xl text-slate-400 line-through">
-                                        ${product.original_price}
+                                        ${product.original_price.toFixed(2)}
                                     </span>
                                 )}
                             </div>
