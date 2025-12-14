@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { Sparkles, Menu, X, ChevronDown, Search } from 'lucide-react'; // Added Search icon import
 import NewsletterForm from './NewsletterForm';
 import SearchBar from './SearchBar'; // Added SearchBar import
@@ -173,7 +173,9 @@ export default function Navbar() {
                     {/* Search Bar Dropdown */}
                     <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isSearchOpen ? 'max-h-32 opacity-100 pb-4' : 'max-h-0 opacity-0'}`}>
                         <div className="pt-2">
-                            <SearchBar showButton={true} />
+                            <Suspense fallback={<div className="h-10 w-full bg-slate-100 rounded-lg animate-pulse" />}>
+                                <SearchBar showButton={true} />
+                            </Suspense>
                         </div>
                     </div>
                 </nav>
