@@ -233,34 +233,34 @@ export default function Navbar() {
                                 <span className="text-xl">📩</span>
                                 Suscríbete al Newsletter
                             </button>
-                            <p className="text-center text-xs text-slate-500 mt-4 font-mono">
-                                v0.1.7 (Forced Dark Styles)
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </header>
-
-            {/* Newsletter Modal */}
-            {isNewsletterOpen && (
-                <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
-                    <div
-                        className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"
-                        onClick={() => setIsNewsletterOpen(false)}
-                    />
-                    <div className="relative w-full max-w-md bg-slate-900 rounded-3xl shadow-2xl overflow-hidden transform transition-all scale-100">
-                        <button
-                            onClick={() => setIsNewsletterOpen(false)}
-                            className="absolute top-4 right-4 text-slate-400 hover:text-white z-10"
-                        >
-                            <X className="w-6 h-6" />
                         </button>
-                        <div className="p-1">
-                            <NewsletterForm />
-                        </div>
                     </div>
                 </div>
-            )}
+            </div>
+        </header >
+
+            {/* Newsletter Modal */ }
+    {
+        isNewsletterOpen && (
+            <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+                <div
+                    className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"
+                    onClick={() => setIsNewsletterOpen(false)}
+                />
+                <div className="relative w-full max-w-md bg-slate-900 rounded-3xl shadow-2xl overflow-hidden transform transition-all scale-100">
+                    <button
+                        onClick={() => setIsNewsletterOpen(false)}
+                        className="absolute top-4 right-4 text-slate-400 hover:text-white z-10"
+                    >
+                        <X className="w-6 h-6" />
+                    </button>
+                    <div className="p-1">
+                        <NewsletterForm />
+                    </div>
+                </div>
+            </div>
+        )
+    }
         </>
     );
 }
