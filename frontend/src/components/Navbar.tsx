@@ -183,12 +183,25 @@ export default function Navbar() {
                     </div>
                 </nav>
 
-                {/* Mobile Menu Overlay */}
+                {/* Mobile Menu Overlay - Full Screen z-100 */}
                 <div
-                    className={`md:hidden fixed inset-0 z-40 bg-black transition-opacity duration-300 ease-in-out ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
-                    style={{ backgroundColor: '#000000', paddingTop: '80px' }} // Force Pitch Black + Padding for Header
+                    className={`md:hidden fixed inset-0 z-[100] bg-black transition-all duration-300 ease-in-out ${isOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
+                    style={{ backgroundColor: '#000000' }}
                 >
-                    <div className="h-full overflow-y-auto pb-32">
+                    {/* Internal Mobile Header */}
+                    <div className="flex justify-between items-center px-4 h-20 border-b border-gray-800">
+                        <span className="text-2xl font-extrabold tracking-tight text-white">
+                            LUMINA
+                        </span>
+                        <button
+                            onClick={() => setIsOpen(false)}
+                            className="p-2 rounded-lg text-white hover:bg-gray-900 transition-colors"
+                        >
+                            <X className="w-8 h-8" />
+                        </button>
+                    </div>
+
+                    <div className="h-[calc(100vh-80px)] overflow-y-auto pb-32">
                         <div className="px-4 py-6 space-y-2">
                             {CATEGORIES.map((category) => (
                                 <div key={category.slug} className="border-b border-gray-800 last:border-0">
@@ -196,11 +209,11 @@ export default function Navbar() {
                                         onClick={() => setActiveCategory(activeCategory === category.slug ? null : category.slug)}
                                         className="w-full flex items-center justify-between py-4 text-left group"
                                     >
-                                        <span className={`text-lg font-bold transition-colors ${activeCategory === category.slug ? 'text-indigo-400' : 'text-white'}`}>
+                                        <span className={`text-xl font-bold transition-colors ${activeCategory === category.slug ? 'text-indigo-400' : 'text-white'}`}>
                                             {category.name}
                                         </span>
                                         <ChevronDown
-                                            className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${activeCategory === category.slug ? 'rotate-180 text-indigo-400' : ''}`}
+                                            className={`w-6 h-6 text-gray-400 transition-transform duration-300 ${activeCategory === category.slug ? 'rotate-180 text-indigo-400' : ''}`}
                                         />
                                     </button>
 
@@ -209,10 +222,10 @@ export default function Navbar() {
                                             <Link
                                                 key={sub.slug}
                                                 href={`/category/${category.slug}/${sub.slug}`}
-                                                className="flex items-center justify-between p-3 rounded-xl bg-gray-900 active:bg-indigo-900/30 active:scale-[0.98] transition-all"
+                                                className="flex items-center justify-between p-4 rounded-xl bg-gray-900 active:bg-indigo-900/30 active:scale-[0.98] transition-all border border-gray-800"
                                                 onClick={() => setIsOpen(false)}
                                             >
-                                                <span className="text-gray-200 font-medium">{sub.name}</span>
+                                                <span className="text-gray-200 font-medium text-lg">{sub.name}</span>
                                                 <span className="text-gray-500">→</span>
                                             </Link>
                                         ))}
@@ -224,7 +237,7 @@ export default function Navbar() {
                         <div className="px-4 pb-2">
                             <Link
                                 href="/blog"
-                                className="block py-3 text-lg font-bold text-white border-b border-gray-800 hover:text-indigo-400 transition-colors"
+                                className="block py-4 text-xl font-bold text-white border-b border-gray-800 hover:text-indigo-400 transition-colors"
                                 onClick={() => setIsOpen(false)}
                             >
                                 Blog
@@ -232,10 +245,7 @@ export default function Navbar() {
                         </div>
 
                         {/* Sticky Bottom Actions */}
-                        <div
-                            className="absolute bottom-0 left-0 w-full p-4 bg-black border-t border-gray-800 pb-8"
-                            style={{ backgroundColor: '#000000' }} // Force Pitch Black
-                        >
+                        <div className="p-4 mt-4">
                             <button
                                 onClick={() => {
                                     setIsOpen(false);
