@@ -32,8 +32,8 @@ export default function AdminSidebar({ adminSlug }: { adminSlug: string }) {
             icon: Package,
         },
         {
-            name: 'Contenido',
-            href: `/${adminSlug}/content`,
+            name: 'Blog',
+            href: `/${adminSlug}/blog`,
             icon: FileText,
         },
         {

@@ -62,8 +62,8 @@ export default function FeaturedAnalysis({ product, index }: { product: Product;
 
                 <div className="flex items-center justify-between pt-4">
                     <div className="flex flex-col">
-                        <span className="text-sm text-slate-400 line-through">${product.original_price}</span>
-                        <span className="text-3xl font-bold text-slate-900">${product.current_price}</span>
+                        <span className="text-sm text-slate-400 line-through">${Number(product.original_price).toFixed(2)}</span>
+                        <span className="text-3xl font-bold text-slate-900">${Number(product.current_price).toFixed(2)}</span>
                     </div>
 
                     <Link

@@ -109,11 +109,11 @@ export default function DealPost({ product }: ProductProps) {
                             <span className="text-sm text-slate-400 mb-1">Mejor precio histórico</span>
                             <div className="flex items-baseline gap-2">
                                 <span className="text-3xl font-bold text-slate-900">
-                                    ${product.current_price}
+                                    ${product.current_price.toFixed(2)}
                                 </span>
                                 {product.original_price > product.current_price && (
                                     <span className="text-lg text-slate-400 line-through">
-                                        ${product.original_price}
+                                        ${product.original_price.toFixed(2)}
                                     </span>
                                 )}
                             </div>
