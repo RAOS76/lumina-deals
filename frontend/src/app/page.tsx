@@ -2,7 +2,7 @@ import { createClient } from '@supabase/supabase-js';
 import DealPost from '../components/DealPost';
 import FeaturedAnalysis from '../components/FeaturedAnalysis';
 import SearchBar from '../components/SearchBar';
-import MaintenancePage from '../components/MaintenancePage';
+// import MaintenancePage from '../components/MaintenancePage';
 import CookieBanner from '../components/CookieBanner';
 import AdPlaceholder from '../components/AdPlaceholder';
 import { Sparkles } from 'lucide-react';
