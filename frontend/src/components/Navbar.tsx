@@ -141,6 +141,9 @@ export default function Navbar() {
                                     </div>
                                 </div>
                             ))}
+                            <Link href="/blog" className="px-3 py-2 text-sm font-semibold text-slate-600 hover:text-indigo-600 transition-colors">
+                                Blog
+                            </Link>
                         </div>
 
                         {/* Right Actions */}
@@ -218,47 +221,60 @@ export default function Navbar() {
                             ))}
                         </div>
 
-                        {/* Sticky Bottom Actions */}
-                        <div
-                            className="absolute bottom-0 left-0 w-full p-4 bg-slate-900 border-t border-slate-800 pb-8"
-                            style={{ backgroundColor: '#0f172a' }} // Force Slate-900
+                    </div>
+
+                    <div className="px-4 pb-2">
+                        <Link
+                            href="/blog"
+                            className="block py-3 text-lg font-bold text-slate-100 border-b border-slate-800 hover:text-indigo-400 transition-colors"
+                            onClick={() => setIsOpen(false)}
                         >
-                            <button
-                                onClick={() => {
-                                    setIsOpen(false);
-                                    setIsNewsletterOpen(true);
-                                }}
-                                className="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-4 rounded-xl font-bold text-lg shadow-lg transition-all active:scale-[0.98] flex items-center justify-center gap-2"
-                            >
-                                <span className="text-xl">📩</span>
-                                Suscríbete al Newsletter
-                        </div>
+                            Blog
+                        </Link>
+                    </div>
+
+                    {/* Sticky Bottom Actions */}
+                    <div
+                        className="absolute bottom-0 left-0 w-full p-4 bg-slate-900 border-t border-slate-800 pb-8"
+                        style={{ backgroundColor: '#0f172a' }} // Force Slate-900
+                    >
+                        <button
+                            onClick={() => {
+                                setIsOpen(false);
+                                setIsNewsletterOpen(true);
+                            }}
+                            className="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-4 rounded-xl font-bold text-lg shadow-lg transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+                        >
+                            <span className="text-xl">📩</span>
+                            Suscríbete al Newsletter
+                        </button>
                     </div>
                 </div>
-            </header >
+            </div>
+        </header >
 
-            {/* Newsletter Modal */}
-            {
-                isNewsletterOpen && (
-                    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
-                        <div
-                            className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"
-                            onClick={() => setIsNewsletterOpen(false)}
-                        />
-                        <div className="relative w-full max-w-md bg-slate-900 rounded-3xl shadow-2xl overflow-hidden transform transition-all scale-100">
-                            <button
-                                onClick={() => setIsNewsletterOpen(false)}
-                                className="absolute top-4 right-4 text-slate-400 hover:text-white z-10"
-                            >
-                                <X className="w-6 h-6" />
-                            </button>
-                            <div className="p-1">
-                                <NewsletterForm />
-                            </div>
-                        </div>
+            {/* Newsletter Modal */ }
+    {
+        isNewsletterOpen && (
+            <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+                <div
+                    className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"
+                    onClick={() => setIsNewsletterOpen(false)}
+                />
+                <div className="relative w-full max-w-md bg-slate-900 rounded-3xl shadow-2xl overflow-hidden transform transition-all scale-100">
+                    <button
+                        onClick={() => setIsNewsletterOpen(false)}
+                        className="absolute top-4 right-4 text-slate-400 hover:text-white z-10"
+                    >
+                        <X className="w-6 h-6" />
+                    </button>
+                    <div className="p-1">
+                        <NewsletterForm />
                     </div>
-                )
-            }
+                </div>
+            </div>
+        )
+    }
         </>
     );
 }
