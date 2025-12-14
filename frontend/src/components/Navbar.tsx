@@ -294,13 +294,6 @@ export default function Navbar() {
                                 <span>Suscríbete al Newsletter</span>
                             </button>
                         </div>
-
-                        {/* Version Indicator */}
-                        <div className="px-6 pb-8">
-                            <p className="text-center text-sm font-bold text-white bg-indigo-600 py-2 rounded-lg">
-                                v0.1.13-SOLID
-                            </p>
-                        </div>
                     </div>
                 </div>
             </header >
