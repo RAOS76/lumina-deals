@@ -183,50 +183,60 @@ export default function Navbar() {
                     </div>
                 </nav>
 
-                {/* Mobile Menu Overlay - Full Screen z-100 */}
+                {/* Mobile Menu Overlay - Full Screen Premium Design */}
                 <div
-                    className={`md:hidden fixed inset-0 z-[100] bg-black transition-all duration-300 ease-in-out ${isOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
-                    style={{ backgroundColor: '#000000' }}
+                    className={`md:hidden fixed inset-0 z-[100] transition-all duration-300 ease-in-out ${isOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
+                    style={{
+                        background: 'linear-gradient(180deg, #000000 0%, #0a0a0a 100%)',
+                    }}
                 >
-                    {/* Internal Mobile Header */}
-                    <div className="flex justify-between items-center px-4 h-20 border-b border-gray-800">
-                        <span className="text-2xl font-extrabold tracking-tight text-white">
-                            LUMINA
-                        </span>
+                    {/* Internal Mobile Header with Gradient */}
+                    <div className="flex justify-between items-center px-6 h-20 border-b border-white/10 bg-gradient-to-r from-indigo-600/10 to-violet-600/10">
+                        <div className="flex items-center gap-3">
+                            <div className="relative">
+                                <div className="absolute -inset-1 bg-gradient-to-r from-indigo-600 to-violet-600 rounded-lg blur opacity-50"></div>
+                                <div className="relative bg-gradient-to-br from-indigo-600 to-violet-700 p-2 rounded-lg">
+                                    <Sparkles className="w-5 h-5 text-white" />
+                                </div>
+                            </div>
+                            <span className="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+                                LUMINA
+                            </span>
+                        </div>
                         <button
                             onClick={() => setIsOpen(false)}
-                            className="p-2 rounded-lg text-white hover:bg-gray-900 transition-colors"
+                            className="p-2 rounded-xl text-white hover:bg-white/10 transition-all active:scale-95"
                         >
-                            <X className="w-8 h-8" />
+                            <X className="w-7 h-7" />
                         </button>
                     </div>
 
-                    <div className="h-[calc(100vh-80px)] overflow-y-auto pb-32">
-                        <div className="px-4 py-6 space-y-2">
-                            {CATEGORIES.map((category) => (
-                                <div key={category.slug} className="border-b border-gray-800 last:border-0">
+                    <div className="h-[calc(100vh-80px)] overflow-y-auto">
+                        <div className="px-6 py-8 space-y-1">
+                            {CATEGORIES.map((category, idx) => (
+                                <div key={category.slug} className="mb-2">
                                     <button
                                         onClick={() => setActiveCategory(activeCategory === category.slug ? null : category.slug)}
-                                        className="w-full flex items-center justify-between py-4 text-left group"
+                                        className="w-full flex items-center justify-between py-5 px-4 text-left group rounded-2xl hover:bg-white/5 transition-all"
                                     >
-                                        <span className={`text-xl font-bold transition-colors ${activeCategory === category.slug ? 'text-indigo-400' : 'text-white'}`}>
+                                        <span className={`text-xl font-bold transition-all ${activeCategory === category.slug ? 'text-transparent bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text' : 'text-white'}`}>
                                             {category.name}
                                         </span>
                                         <ChevronDown
-                                            className={`w-6 h-6 text-gray-400 transition-transform duration-300 ${activeCategory === category.slug ? 'rotate-180 text-indigo-400' : ''}`}
+                                            className={`w-6 h-6 transition-all duration-300 ${activeCategory === category.slug ? 'rotate-180 text-indigo-400' : 'text-gray-500'}`}
                                         />
                                     </button>
 
-                                    <div className={`grid gap-2 overflow-hidden transition-all duration-300 ease-in-out ${activeCategory === category.slug ? 'max-h-96 opacity-100 pb-4' : 'max-h-0 opacity-0'}`}>
+                                    <div className={`grid gap-3 overflow-hidden transition-all duration-300 ease-in-out ${activeCategory === category.slug ? 'max-h-[500px] opacity-100 mt-2 mb-4' : 'max-h-0 opacity-0'}`}>
                                         {category.subcategories.map((sub) => (
                                             <Link
                                                 key={sub.slug}
                                                 href={`/category/${category.slug}/${sub.slug}`}
-                                                className="flex items-center justify-between p-4 rounded-xl bg-gray-900 active:bg-indigo-900/30 active:scale-[0.98] transition-all border border-gray-800"
+                                                className="flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-white/5 to-white/[0.02] hover:from-indigo-600/20 hover:to-violet-600/20 active:scale-[0.97] transition-all border border-white/10 hover:border-indigo-500/30 ml-4"
                                                 onClick={() => setIsOpen(false)}
                                             >
-                                                <span className="text-gray-200 font-medium text-lg">{sub.name}</span>
-                                                <span className="text-gray-500">→</span>
+                                                <span className="text-gray-200 font-semibold text-base">{sub.name}</span>
+                                                <span className="text-indigo-400 text-lg">→</span>
                                             </Link>
                                         ))}
                                     </div>
@@ -234,28 +244,37 @@ export default function Navbar() {
                             ))}
                         </div>
 
-                        <div className="px-4 pb-2">
+                        {/* Blog Link */}
+                        <div className="px-6 pb-4">
                             <Link
                                 href="/blog"
-                                className="block py-4 text-xl font-bold text-white border-b border-gray-800 hover:text-indigo-400 transition-colors"
+                                className="flex items-center justify-between py-5 px-4 rounded-2xl bg-gradient-to-r from-white/5 to-white/[0.02] hover:from-indigo-600/20 hover:to-violet-600/20 border border-white/10 hover:border-indigo-500/30 transition-all active:scale-[0.97]"
                                 onClick={() => setIsOpen(false)}
                             >
-                                Blog
+                                <span className="text-xl font-bold text-white">Blog</span>
+                                <span className="text-indigo-400 text-xl">→</span>
                             </Link>
                         </div>
 
-                        {/* Sticky Bottom Actions */}
-                        <div className="p-4 mt-4">
+                        {/* Newsletter CTA */}
+                        <div className="px-6 pb-8 pt-4">
                             <button
                                 onClick={() => {
                                     setIsOpen(false);
                                     setIsNewsletterOpen(true);
                                 }}
-                                className="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-4 rounded-xl font-bold text-lg shadow-lg transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+                                className="w-full bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white py-5 rounded-2xl font-bold text-lg shadow-2xl shadow-indigo-500/20 transition-all active:scale-[0.97] flex items-center justify-center gap-3"
                             >
-                                <span className="text-xl">📩</span>
-                                Suscríbete al Newsletter
+                                <span className="text-2xl">📩</span>
+                                <span>Suscríbete al Newsletter</span>
                             </button>
+                        </div>
+
+                        {/* Version Indicator (Temporary) */}
+                        <div className="px-6 pb-8">
+                            <p className="text-center text-xs text-gray-600 font-mono">
+                                v0.1.12-PREMIUM
+                            </p>
                         </div>
                     </div>
                 </div>
