@@ -181,20 +181,20 @@ export default function Navbar() {
                 </nav>
 
                 {/* Mobile Menu Overlay */}
-                <div className={`md:hidden fixed inset-0 z-50 bg-white opacity-100 border-t border-slate-200 shadow-inner transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'} top-20`}>
+                <div className={`md:hidden fixed inset-0 z-50 bg-slate-900 border-t border-slate-800 shadow-inner transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'} top-20`}>
                     <div className="h-full overflow-y-auto pb-32">
                         <div className="px-4 py-6 space-y-2">
                             {CATEGORIES.map((category) => (
-                                <div key={category.slug} className="border-b border-slate-100 last:border-0">
+                                <div key={category.slug} className="border-b border-slate-800 last:border-0">
                                     <button
                                         onClick={() => setActiveCategory(activeCategory === category.slug ? null : category.slug)}
                                         className="w-full flex items-center justify-between py-4 text-left group"
                                     >
-                                        <span className={`text-lg font-bold transition-colors ${activeCategory === category.slug ? 'text-indigo-600' : 'text-slate-900'}`}>
+                                        <span className={`text-lg font-bold transition-colors ${activeCategory === category.slug ? 'text-indigo-400' : 'text-slate-100'}`}>
                                             {category.name}
                                         </span>
                                         <ChevronDown
-                                            className={`w-5 h-5 text-slate-400 transition-transform duration-300 ${activeCategory === category.slug ? 'rotate-180 text-indigo-600' : ''}`}
+                                            className={`w-5 h-5 text-slate-500 transition-transform duration-300 ${activeCategory === category.slug ? 'rotate-180 text-indigo-400' : ''}`}
                                         />
                                     </button>
 
@@ -203,11 +203,11 @@ export default function Navbar() {
                                             <Link
                                                 key={sub.slug}
                                                 href={`/category/${category.slug}/${sub.slug}`}
-                                                className="flex items-center justify-between p-3 rounded-xl bg-slate-50 active:bg-indigo-50 active:scale-[0.98] transition-all"
+                                                className="flex items-center justify-between p-3 rounded-xl bg-slate-800/50 active:bg-indigo-900/30 active:scale-[0.98] transition-all"
                                                 onClick={() => setIsOpen(false)}
                                             >
-                                                <span className="text-slate-600 font-medium">{sub.name}</span>
-                                                <span className="text-slate-300">→</span>
+                                                <span className="text-slate-300 font-medium">{sub.name}</span>
+                                                <span className="text-slate-500">→</span>
                                             </Link>
                                         ))}
                                     </div>
