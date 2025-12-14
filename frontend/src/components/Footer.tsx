@@ -10,8 +10,11 @@ export default function Footer() {
                         <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400 mb-4">
                             Lumina Ofertas
                         </h2>
-                        <p className="text-gray-400 max-w-md">
+                        <p className="text-gray-400 max-w-md mb-4">
                             Tu curador de ofertas impulsado por Inteligencia Artificial. Analizamos miles de productos para traerte solo lo mejor.
+                        </p>
+                        <p className="text-xs text-gray-500">
+                            Como afiliado de Amazon, obtengo ingresos por las compras adscritas que cumplen los requisitos.
                         </p>
                     </div>
                     <div>

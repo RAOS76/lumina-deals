@@ -15,20 +15,11 @@ interface ProductProps {
         image_url: string;
         product_url: string;
         price_history: any[]; // Array from JSONB
+        coupon_text?: string; // Added coupon_text
     };
 }
 
-const getAffiliateUrl = (url: string) => {
-    try {
-        const urlObj = new URL(url);
-        // Aquí pondrás tu TAG de afiliado real cuando lo tengas
-        // Ejemplo: urlObj.searchParams.set("tag", "lumina-20");
-        urlObj.searchParams.set("tag", "lumina-demo-20"); // Placeholder
-        return urlObj.toString();
-    } catch (e) {
-        return url;
-    }
-};
+import { getAffiliateUrl } from '@/lib/utils';
 
 export default function ProductCard({ product }: ProductProps) {
     // Transformar historial para Tremor
@@ -40,10 +31,15 @@ export default function ProductCard({ product }: ProductProps) {
     return (
         <div className="group relative bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
             {/* Badge Flotante IA */}
-            <div className="absolute top-3 left-3 z-10">
+            <div className="absolute top-3 left-3 z-10 flex flex-col gap-1">
                 <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800 shadow-sm border border-indigo-200 backdrop-blur-md bg-opacity-90">
                     {product.ai_badge || '✨ AI Pick'}
                 </span>
+                {product.coupon_text && (
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-700 shadow-sm border border-green-200 backdrop-blur-md bg-opacity-90 animate-pulse">
+                        🎟️ {product.coupon_text}
+                    </span>
+                )}
             </div>
 
             {/* Imagen del Producto */}

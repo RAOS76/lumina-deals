@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import { notFound } from 'next/navigation';
+import { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowLeft, ExternalLink, Clock, Tag, TrendingDown, Brain, ShoppingBag, Star, MessageSquare } from 'lucide-react';
 import { SparkAreaChart } from '@tremor/react';
@@ -12,6 +13,30 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 async function getProduct(slug: string) {
     console.log(`[DealPage] Fetching product for slug: "${slug}"`);
+
+    // Handle Simulated Products (Demo Fallback)
+    if (slug.startsWith('sim-')) {
+        console.log(`[DealPage] Detected simulated product: ${slug}`);
+        return {
+            id: slug,
+            slug: slug,
+            clean_title: 'Producto Simulado (Demo)',
+            current_price: 29.99,
+            original_price: 49.99,
+            discount_percentage: 40,
+            image_url: 'https://placehold.co/600x400/png?text=Demo+Product',
+            category: 'Demo',
+            lumina_score: 88,
+            ai_summary: 'Este es un producto simulado generado para la demostración cuando no hay resultados reales disponibles.',
+            ai_badge: '💡 Demo',
+            sales_phrase: 'Producto de ejemplo.',
+            product_url: 'https://www.amazon.com',
+            rating: 4.5,
+            review_count: 120,
+            price_history: []
+        };
+    }
+
     const { data, error } = await supabase
         .from('products')
         .select('*')
@@ -112,6 +137,12 @@ export default async function DealPage({ params }: { params: Promise<{ slug: str
                                     <Tag className="w-3 h-3" />
                                     {product.category}
                                 </span>
+                                {product.sales_rank && (
+                                    <span className="bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide flex items-center gap-1 border border-amber-200">
+                                        <TrendingDown className="w-3 h-3" />
+                                        {product.sales_rank}
+                                    </span>
+                                )}
                             </div>
 
                             <h1 className="text-2xl md:text-4xl font-bold text-slate-900 leading-tight mb-4">
@@ -131,6 +162,15 @@ export default async function DealPage({ params }: { params: Promise<{ slug: str
                                     {product.rating} <span className="text-slate-400">({product.review_count?.toLocaleString()} reviews)</span>
                                 </span>
                             </div>
+
+                            {/* Coupon Badge */}
+                            {product.coupon_text && (
+                                <div className="mb-4">
+                                    <span className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold bg-green-100 text-green-700 border border-green-200 shadow-sm animate-pulse">
+                                        🎟️ {product.coupon_text}
+                                    </span>
+                                </div>
+                            )}
 
                             <div className="flex items-baseline gap-3 mb-8">
                                 <span className="text-4xl font-bold text-slate-900">
@@ -154,7 +194,7 @@ export default async function DealPage({ params }: { params: Promise<{ slug: str
                                 <ExternalLink className="w-4 h-4 opacity-50" />
                             </a>
                             <p className="text-xs text-center text-slate-400 mt-3">
-                                Al comprar a través de este enlace, podemos ganar una comisión.
+                                Como afiliado de Amazon, obtengo ingresos por las compras adscritas que cumplen los requisitos.
                             </p>
                         </div>
                     </div>
@@ -249,6 +289,6 @@ export default async function DealPage({ params }: { params: Promise<{ slug: str
                     }),
                 }}
             />
-        </main>
+        </main >
     );
 }

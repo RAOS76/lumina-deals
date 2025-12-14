@@ -2,7 +2,9 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
-import { Sparkles, Menu, X, ChevronDown } from 'lucide-react';
+import { Sparkles, Menu, X, ChevronDown, Search } from 'lucide-react'; // Added Search icon import
+import NewsletterForm from './NewsletterForm';
+import SearchBar from './SearchBar'; // Added SearchBar import
 
 const CATEGORIES = [
     {
@@ -11,8 +13,8 @@ const CATEGORIES = [
         description: 'Innovación que justifica su precio.',
         subcategories: [
             { name: 'Audio Premium', slug: 'audio' },
-            { name: 'Laptops', slug: 'laptops' },
-            { name: 'Smart Home', slug: 'smart-home' },
+            { name: 'Computación', slug: 'computacion' },
+            { name: 'Gadgets', slug: 'gadgets' },
             { name: 'Fotografía', slug: 'fotografia' },
         ],
     },
@@ -22,9 +24,9 @@ const CATEGORIES = [
         description: 'Tu espacio, optimizado.',
         subcategories: [
             { name: 'Cocina', slug: 'cocina' },
-            { name: 'Climatización', slug: 'climatizacion' },
-            { name: 'Seguridad', slug: 'seguridad' },
-            { name: 'Robots', slug: 'robots' },
+            { name: 'Domótica', slug: 'domotica' },
+            { name: 'Limpieza', slug: 'limpieza' },
+            { name: 'Decoración', slug: 'decoracion' },
         ],
     },
     {
@@ -33,9 +35,9 @@ const CATEGORIES = [
         description: 'Rendimiento sin compromisos.',
         subcategories: [
             { name: 'Consolas', slug: 'consolas' },
-            { name: 'Periféricos', slug: 'perifericos' },
-            { name: 'Monitores', slug: 'monitores' },
-            { name: 'Sillas', slug: 'sillas' },
+            { name: 'PC Gaming', slug: 'pc-gaming' },
+            { name: 'Accesorios', slug: 'accesorios' },
+            { name: 'Juegos', slug: 'juegos' },
         ],
     },
     {
@@ -44,8 +46,7 @@ const CATEGORIES = [
         description: 'Inversiones en ti mismo.',
         subcategories: [
             { name: 'Cuidado Personal', slug: 'cuidado-personal' },
-            { name: 'Fitness', slug: 'fitness' },
-            { name: 'Descanso', slug: 'descanso' },
+            { name: 'Deporte', slug: 'deporte' },
         ],
     },
     {
@@ -53,18 +54,26 @@ const CATEGORIES = [
         slug: 'oficina',
         description: 'Diseña tu flujo de trabajo.',
         subcategories: [
-            { name: 'Escritorios', slug: 'escritorios' },
-            { name: 'Organización', slug: 'organizacion' },
+            { name: 'Muebles', slug: 'muebles' },
+            { name: 'Periféricos', slug: 'perifericos' },
             { name: 'Accesorios', slug: 'accesorios' },
+        ],
+    },
+    {
+        name: 'Moda',
+        slug: 'moda',
+        description: 'Estilo inteligente.',
+        subcategories: [
+            { name: 'Accesorios', slug: 'accesorios' },
+            { name: 'Calzado', slug: 'calzado' },
         ],
     },
 ];
 
-import NewsletterForm from './NewsletterForm';
-
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
     const [isNewsletterOpen, setIsNewsletterOpen] = useState(false);
+    const [isSearchOpen, setIsSearchOpen] = useState(false); // New state
     const [activeCategory, setActiveCategory] = useState<string | null>(null);
 
     return (
@@ -136,10 +145,11 @@ export default function Navbar() {
 
                         {/* Right Actions */}
                         <div className="hidden md:flex items-center gap-4">
-                            <button className="p-2 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-all">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                                </svg>
+                            <button
+                                onClick={() => setIsSearchOpen(!isSearchOpen)}
+                                className={`p-2 rounded-full transition-all ${isSearchOpen ? 'text-indigo-600 bg-indigo-50' : 'text-slate-500 hover:text-indigo-600 hover:bg-indigo-50'}`}
+                            >
+                                {isSearchOpen ? <X className="h-5 w-5" /> : <Search className="h-5 w-5" />}
                             </button>
                             <button
                                 onClick={() => setIsNewsletterOpen(true)}
@@ -157,6 +167,13 @@ export default function Navbar() {
                             >
                                 {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
                             </button>
+                        </div>
+                    </div>
+
+                    {/* Search Bar Dropdown */}
+                    <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isSearchOpen ? 'max-h-32 opacity-100 pb-4' : 'max-h-0 opacity-0'}`}>
+                        <div className="pt-2">
+                            <SearchBar showButton={true} />
                         </div>
                     </div>
                 </nav>

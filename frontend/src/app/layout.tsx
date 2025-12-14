@@ -2,10 +2,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import AdSenseScript from "@/components/AdSenseScript";
-import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
 import NewsletterPopup from "@/components/NewsletterPopup";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import ClientLayout from "@/components/ClientLayout";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,10 +38,9 @@ export default function RootLayout({
       >
         <GoogleAnalytics />
         <AdSenseScript />
-        <Navbar />
-        {children}
-        <Footer />
-        <NewsletterPopup />
+        <ClientLayout>
+          {children}
+        </ClientLayout>
       </body>
     </html>
   );
