@@ -78,7 +78,7 @@ export default function Navbar() {
 
     return (
         <>
-            <header className="fixed w-full top-0 z-50 transition-all duration-300 bg-white/70 backdrop-blur-xl backdrop-saturate-150 border-b border-slate-200/50 shadow-sm supports-[backdrop-filter]:bg-white/60">
+            <header className="fixed w-full top-0 z-50 bg-white/95 backdrop-blur-xl border-b border-slate-200/50 shadow-sm">
                 <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-20 items-center">
                         {/* Logo */}
@@ -185,8 +185,8 @@ export default function Navbar() {
 
                 {/* Mobile Menu Overlay */}
                 <div
-                    className={`md:hidden fixed inset-0 z-[100] bg-black transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'} top-20`}
-                    style={{ backgroundColor: '#000000' }} // Force Pitch Black
+                    className={`md:hidden fixed inset-0 z-40 bg-black transition-opacity duration-300 ease-in-out ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+                    style={{ backgroundColor: '#000000', paddingTop: '80px' }} // Force Pitch Black + Padding for Header
                 >
                     <div className="h-full overflow-y-auto pb-32">
                         <div className="px-4 py-6 space-y-2">
