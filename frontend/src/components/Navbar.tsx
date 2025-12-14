@@ -185,22 +185,22 @@ export default function Navbar() {
 
                 {/* Mobile Menu Overlay */}
                 <div
-                    className={`md:hidden fixed inset-0 z-50 bg-slate-900 border-t border-slate-800 shadow-inner transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'} top-20`}
-                    style={{ backgroundColor: '#0f172a' }} // Force Slate-900
+                    className={`md:hidden fixed inset-0 z-[100] bg-black transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'} top-20`}
+                    style={{ backgroundColor: '#000000' }} // Force Pitch Black
                 >
                     <div className="h-full overflow-y-auto pb-32">
                         <div className="px-4 py-6 space-y-2">
                             {CATEGORIES.map((category) => (
-                                <div key={category.slug} className="border-b border-slate-800 last:border-0">
+                                <div key={category.slug} className="border-b border-gray-800 last:border-0">
                                     <button
                                         onClick={() => setActiveCategory(activeCategory === category.slug ? null : category.slug)}
                                         className="w-full flex items-center justify-between py-4 text-left group"
                                     >
-                                        <span className={`text-lg font-bold transition-colors ${activeCategory === category.slug ? 'text-indigo-400' : 'text-slate-100'}`}>
+                                        <span className={`text-lg font-bold transition-colors ${activeCategory === category.slug ? 'text-indigo-400' : 'text-white'}`}>
                                             {category.name}
                                         </span>
                                         <ChevronDown
-                                            className={`w-5 h-5 text-slate-500 transition-transform duration-300 ${activeCategory === category.slug ? 'rotate-180 text-indigo-400' : ''}`}
+                                            className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${activeCategory === category.slug ? 'rotate-180 text-indigo-400' : ''}`}
                                         />
                                     </button>
 
@@ -209,11 +209,11 @@ export default function Navbar() {
                                             <Link
                                                 key={sub.slug}
                                                 href={`/category/${category.slug}/${sub.slug}`}
-                                                className="flex items-center justify-between p-3 rounded-xl bg-slate-800/50 active:bg-indigo-900/30 active:scale-[0.98] transition-all"
+                                                className="flex items-center justify-between p-3 rounded-xl bg-gray-900 active:bg-indigo-900/30 active:scale-[0.98] transition-all"
                                                 onClick={() => setIsOpen(false)}
                                             >
-                                                <span className="text-slate-300 font-medium">{sub.name}</span>
-                                                <span className="text-slate-500">→</span>
+                                                <span className="text-gray-200 font-medium">{sub.name}</span>
+                                                <span className="text-gray-500">→</span>
                                             </Link>
                                         ))}
                                     </div>
@@ -224,7 +224,7 @@ export default function Navbar() {
                         <div className="px-4 pb-2">
                             <Link
                                 href="/blog"
-                                className="block py-3 text-lg font-bold text-slate-100 border-b border-slate-800 hover:text-indigo-400 transition-colors"
+                                className="block py-3 text-lg font-bold text-white border-b border-gray-800 hover:text-indigo-400 transition-colors"
                                 onClick={() => setIsOpen(false)}
                             >
                                 Blog
@@ -233,8 +233,8 @@ export default function Navbar() {
 
                         {/* Sticky Bottom Actions */}
                         <div
-                            className="absolute bottom-0 left-0 w-full p-4 bg-slate-900 border-t border-slate-800 pb-8"
-                            style={{ backgroundColor: '#0f172a' }} // Force Slate-900
+                            className="absolute bottom-0 left-0 w-full p-4 bg-black border-t border-gray-800 pb-8"
+                            style={{ backgroundColor: '#000000' }} // Force Pitch Black
                         >
                             <button
                                 onClick={() => {
