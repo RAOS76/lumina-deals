@@ -1,0 +1,122 @@
+import Link from 'next/link';
+import Image from 'next/image';
+import { createClient } from '@supabase/supabase-js';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+import { Calendar, User } from 'lucide-react';
+
+// Initialize Supabase Client
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+export const revalidate = 3600; // Revalidate every hour
+
+async function getPosts() {
+    const { data: posts, error } = await supabase
+        .from('posts')
+        .select(`
+            *,
+            authors (
+                name,
+                avatar_url
+            )
+        `)
+        .eq('published', true)
+        .order('created_at', { ascending: false });
+
+    if (error) {
+        console.error('Error fetching posts:', error);
+        return [];
+    }
+
+    return posts;
+}
+
+export default async function BlogPage() {
+    const posts = await getPosts();
+
+    return (
+        <div className="min-h-screen bg-slate-50 font-sans selection:bg-indigo-100 selection:text-indigo-900">
+            <Navbar />
+
+            <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-20">
+                <div className="text-center mb-16">
+                    <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight mb-4">
+                        Blog de <span className="text-indigo-600">Lumina</span>
+                    </h1>
+                    <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+                        Análisis profundos, guías de compra y las mejores ofertas curadas por nuestra IA.
+                    </p>
+                </div>
+
+                {posts.length === 0 ? (
+                    <div className="text-center py-20">
+                        <p className="text-xl text-slate-500">No hay artículos publicados aún.</p>
+                    </div>
+                ) : (
+                    <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+                        {posts.map((post) => (
+                            <Link key={post.id} href={`/blog/${post.slug}`} className="group">
+                                <article className="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-slate-100 h-full flex flex-col">
+                                    <div className="relative h-48 w-full bg-slate-200 overflow-hidden">
+                                        {post.cover_image ? (
+                                            <Image
+                                                src={post.cover_image}
+                                                alt={post.title}
+                                                fill
+                                                className="object-cover group-hover:scale-105 transition-transform duration-500"
+                                            />
+                                        ) : (
+                                            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-indigo-500 to-violet-600">
+                                                <span className="text-4xl">📝</span>
+                                            </div>
+                                        )}
+                                    </div>
+                                    <div className="p-6 flex-1 flex flex-col">
+                                        <div className="flex items-center gap-4 text-xs text-slate-500 mb-3">
+                                            <div className="flex items-center gap-1">
+                                                <Calendar className="w-3 h-3" />
+                                                {new Date(post.created_at).toLocaleDateString('es-ES', {
+                                                    day: 'numeric',
+                                                    month: 'long',
+                                                    year: 'numeric'
+                                                })}
+                                            </div>
+                                        </div>
+                                        <h2 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-indigo-600 transition-colors line-clamp-2">
+                                            {post.title}
+                                        </h2>
+                                        <p className="text-slate-600 text-sm leading-relaxed mb-4 line-clamp-3 flex-1">
+                                            {post.excerpt}
+                                        </p>
+                                        <div className="flex items-center gap-3 pt-4 border-t border-slate-100 mt-auto">
+                                            {post.authors?.avatar_url ? (
+                                                <Image
+                                                    src={post.authors.avatar_url}
+                                                    alt={post.authors.name}
+                                                    width={24}
+                                                    height={24}
+                                                    className="rounded-full"
+                                                />
+                                            ) : (
+                                                <div className="w-6 h-6 rounded-full bg-slate-200 flex items-center justify-center">
+                                                    <User className="w-3 h-3 text-slate-500" />
+                                                </div>
+                                            )}
+                                            <span className="text-xs font-medium text-slate-700">
+                                                {post.authors?.name || 'Equipo Lumina'}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </article>
+                            </Link>
+                        ))}
+                    </div>
+                )}
+            </main>
+
+            <Footer />
+        </div>
+    );
+}
