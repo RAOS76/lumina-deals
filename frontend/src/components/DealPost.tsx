@@ -130,7 +130,7 @@ export default function DealPost({ product }: ProductProps) {
                             <a
                                 href={getAffiliateUrl(product.product_url)}
                                 target="_blank"
-                                rel="noopener noreferrer nofollow"
+                                rel="noopener noreferrer nofollow sponsored"
                                 className="px-5 py-3 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-200 flex items-center gap-2"
                             >
                                 <ShoppingBag className="w-4 h-4" />

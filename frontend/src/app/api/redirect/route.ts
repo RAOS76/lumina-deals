@@ -4,12 +4,12 @@ export const runtime = 'edge'; // Use Edge Runtime for speed
 
 // Configuración de Tags por país (esto debería ir en .env idealmente)
 const AMAZON_TAGS: Record<string, string> = {
-    'US': process.env.NEXT_PUBLIC_AMAZON_TAG || 'lumina-demo-20',
-    'ES': process.env.AMAZON_TAG_ES || 'lumina-es-21',
-    'MX': process.env.AMAZON_TAG_MX || 'lumina-mx-21',
-    'UK': process.env.AMAZON_TAG_UK || 'lumina-uk-21',
+    'US': process.env.NEXT_PUBLIC_AMAZON_TAG || 'raosofert-20',
+    'ES': process.env.AMAZON_TAG_ES || 'raosofert-20',
+    'MX': process.env.AMAZON_TAG_MX || 'raosofert-20',
+    'UK': process.env.AMAZON_TAG_UK || 'raosofert-20',
     // Fallback default
-    'DEFAULT': process.env.NEXT_PUBLIC_AMAZON_TAG || 'lumina-demo-20'
+    'DEFAULT': process.env.NEXT_PUBLIC_AMAZON_TAG || 'raosofert-20'
 };
 
 // Mapeo de dominios
