@@ -23,10 +23,10 @@ export default function FeaturedAnalysis({ product, index }: { product: Product;
     // Standard compact view for products without detailed analysis
     if (!hasDetailedAnalysis) {
         return (
-            <div className={`flex flex-col md:flex-row${isReversed ? '-reverse' : ''} items-center gap-8 md:gap-12 py-12 border-b border-slate-100 last:border-0`}>
+            <div className={`flex flex-col md:flex-row${isReversed ? '-reverse' : ''} items-center gap-6 md:gap-8 py-12 border-b border-slate-100 last:border-0`}>
                 {/* Image Side */}
-                <div className="w-full md:w-1/2">
-                    <div className="relative aspect-[4/3] bg-white rounded-3xl overflow-hidden shadow-xl border border-slate-100 group">
+                <div className="w-full md:w-2/5">
+                    <div className="relative aspect-square bg-white rounded-3xl overflow-hidden shadow-xl border border-slate-100 group">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                             src={product.image_url}
@@ -48,7 +48,7 @@ export default function FeaturedAnalysis({ product, index }: { product: Product;
                 </div>
 
                 {/* Content Side */}
-                <div className="w-full md:w-1/2 text-left space-y-6">
+                <div className="w-full md:w-3/5 text-left space-y-4">
                     <div className="flex items-center gap-2">
                         <span className="bg-indigo-50 text-indigo-600 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border border-indigo-100">
                             {product.category || 'Análisis Destacado'}
