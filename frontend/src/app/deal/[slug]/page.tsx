@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { ArrowLeft, ExternalLink, Clock, Tag, TrendingDown, Brain, ShoppingBag, Star, MessageSquare } from 'lucide-react';
 import { SparkAreaChart } from '@tremor/react';
 import { getAffiliateUrl } from '@/lib/utils';
+import DetailedAnalysis from '@/components/DetailedAnalysis';
+import { productAnalyses } from '@/lib/productAnalyses';
 
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
@@ -227,7 +229,17 @@ export default async function DealPage({ params }: { params: Promise<{ slug: str
                         </div>
                     </div>
                 </div>
+
+                {/* Detailed Analysis Section */}
+                {productAnalyses[product.slug] && (
+                    <DetailedAnalysis
+                        slug={product.slug}
+                        analysis={productAnalyses[product.slug]}
+                    />
+                )}
             </div>
+
+            {/* JSON-LD Structured Data for SEO */}
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{
