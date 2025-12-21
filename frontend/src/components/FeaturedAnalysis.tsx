@@ -87,10 +87,10 @@ export default function FeaturedAnalysis({ product, index }: { product: Product;
     // Enhanced view for products with detailed analysis
     return (
         <div className="py-12 border-b border-slate-100 last:border-0">
-            <div className={`flex flex-col md:flex-row${isReversed ? '-reverse' : ''} items-start gap-8 md:gap-12 mb-8`}>
-                {/* Image Side */}
-                <div className="w-full md:w-1/2">
-                    <div className="relative aspect-[4/3] bg-white rounded-3xl overflow-hidden shadow-xl border border-slate-100 group">
+            <div className={`flex flex-col md:flex-row${isReversed ? '-reverse' : ''} items-start gap-6 md:gap-8 mb-8`}>
+                {/* Image Side - Reduced width */}
+                <div className="w-full md:w-2/5">
+                    <div className="relative aspect-square bg-white rounded-3xl overflow-hidden shadow-xl border border-slate-100 group">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                             src={product.image_url}
@@ -110,8 +110,8 @@ export default function FeaturedAnalysis({ product, index }: { product: Product;
                     </div>
                 </div>
 
-                {/* Content Side */}
-                <div className="w-full md:w-1/2 text-left space-y-6">
+                {/* Content Side - Increased width */}
+                <div className="w-full md:w-3/5 text-left space-y-4">
                     <div className="flex items-center gap-2">
                         <span className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider shadow-md">
                             ⭐ Análisis Completo
@@ -132,9 +132,9 @@ export default function FeaturedAnalysis({ product, index }: { product: Product;
                     </div>
 
                     {/* Quick Highlights */}
-                    <div className="bg-gradient-to-br from-slate-50 to-slate-100 rounded-2xl p-6 border border-slate-200">
-                        <h4 className="text-sm font-bold text-slate-900 mb-3 uppercase tracking-wide">Destacados</h4>
-                        <div className="grid grid-cols-1 gap-2">
+                    <div className="bg-gradient-to-br from-slate-50 to-slate-100 rounded-xl p-4 border border-slate-200">
+                        <h4 className="text-xs font-bold text-slate-900 mb-2 uppercase tracking-wide">Destacados</h4>
+                        <div className="grid grid-cols-1 gap-1.5">
                             {analysis.keyFeatures.slice(0, 3).map((feature, idx) => (
                                 <div key={idx} className="flex items-start gap-2">
                                     <Check className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
@@ -162,10 +162,10 @@ export default function FeaturedAnalysis({ product, index }: { product: Product;
             </div>
 
             {/* Pros & Cons Preview */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
                 {/* Top 3 Pros */}
-                <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 border border-green-100">
-                    <h4 className="text-sm font-bold text-green-900 mb-3 flex items-center gap-2">
+                <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-4 border border-green-100">
+                    <h4 className="text-xs font-bold text-green-900 mb-2 flex items-center gap-2">
                         <Check className="w-4 h-4" />
                         Lo Mejor
                     </h4>
@@ -180,8 +180,8 @@ export default function FeaturedAnalysis({ product, index }: { product: Product;
                 </div>
 
                 {/* Top 2 Cons */}
-                <div className="bg-gradient-to-br from-rose-50 to-red-50 rounded-xl p-6 border border-rose-100">
-                    <h4 className="text-sm font-bold text-rose-900 mb-3 flex items-center gap-2">
+                <div className="bg-gradient-to-br from-rose-50 to-red-50 rounded-xl p-4 border border-rose-100">
+                    <h4 className="text-xs font-bold text-rose-900 mb-2 flex items-center gap-2">
                         <X className="w-4 h-4" />
                         A Considerar
                     </h4>
@@ -197,9 +197,9 @@ export default function FeaturedAnalysis({ product, index }: { product: Product;
             </div>
 
             {/* Verdict Preview */}
-            <div className="mt-6 bg-gradient-to-r from-slate-800 to-slate-900 rounded-xl p-6 text-white">
-                <h4 className="text-sm font-bold mb-2 uppercase tracking-wide opacity-90">Veredicto</h4>
-                <p className="text-sm leading-relaxed opacity-95 line-clamp-2">
+            <div className="mt-4 bg-gradient-to-r from-slate-800 to-slate-900 rounded-xl p-4 text-white">
+                <h4 className="text-xs font-bold mb-1.5 uppercase tracking-wide opacity-90">Veredicto</h4>
+                <p className="text-xs leading-relaxed opacity-95 line-clamp-2">
                     {analysis.verdict}
                 </p>
             </div>
