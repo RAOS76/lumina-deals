@@ -7,6 +7,13 @@ interface WordCounterProps {
 export default function WordCounter({ content }: WordCounterProps) {
     // Strip HTML tags and count words
     const stripHtml = (html: string) => {
+        // Check if we're in the browser
+        if (typeof window === 'undefined') {
+            // Server-side: use regex to strip HTML
+            return html.replace(/<[^>]*>/g, '');
+        }
+
+        // Browser-side: use DOM parser
         const tmp = document.createElement('div');
         tmp.innerHTML = html;
         return tmp.textContent || tmp.innerText || '';

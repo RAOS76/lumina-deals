@@ -137,9 +137,17 @@ export default async function BlogPostPage({ params }: Props) {
                     white-space: pre-wrap;
                 }
                 
-                /* Better paragraph spacing */
+                /* Better paragraph spacing - with !important to override Tailwind */
                 .prose p {
-                    margin-bottom: 1.5em;
+                    margin-bottom: 1.5em !important;
+                }
+                
+                /* Ensure spacing works on mobile */
+                @media (max-width: 768px) {
+                    .prose p {
+                        margin-bottom: 1.5em !important;
+                        line-height: 1.75 !important;
+                    }
                 }
             ` }} />
         </div>
