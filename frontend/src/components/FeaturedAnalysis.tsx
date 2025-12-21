@@ -31,7 +31,7 @@ export default function FeaturedAnalysis({ product, index }: { product: Product;
                         <img
                             src={product.image_url}
                             alt={product.clean_title}
-                            className="w-full h-full object-contain p-8 transition-transform duration-700 group-hover:scale-105"
+                            className="w-full h-full object-contain p-4 transition-transform duration-700 group-hover:scale-105"
                         />
                         {product.discount_percentage > 0 && (
                             <div className="absolute top-4 left-4 bg-rose-500 text-white px-3 py-1 rounded-full text-sm font-bold shadow-lg">
@@ -87,7 +87,7 @@ export default function FeaturedAnalysis({ product, index }: { product: Product;
     // Enhanced view for products with detailed analysis
     return (
         <div className="py-8 border-b border-slate-100 last:border-0">
-            <div className={`flex flex-col md:flex-row${isReversed ? '-reverse' : ''} items-start gap-6 md:gap-8 mb-8`}>
+            <div className={`flex flex-col md:flex-row${isReversed ? '-reverse' : ''} items-start gap-6 md:gap-8 mb-4`}>
                 {/* Image Side - Reduced width */}
                 <div className="w-full md:w-2/5">
                     <div className="relative aspect-square bg-white rounded-3xl overflow-hidden shadow-xl border border-slate-100 group">
@@ -95,7 +95,7 @@ export default function FeaturedAnalysis({ product, index }: { product: Product;
                         <img
                             src={product.image_url}
                             alt={product.clean_title}
-                            className="w-full h-full object-contain p-8 transition-transform duration-700 group-hover:scale-105"
+                            className="w-full h-full object-contain p-4 transition-transform duration-700 group-hover:scale-105"
                         />
                         {product.discount_percentage > 0 && (
                             <div className="absolute top-4 left-4 bg-rose-500 text-white px-3 py-1 rounded-full text-sm font-bold shadow-lg">
