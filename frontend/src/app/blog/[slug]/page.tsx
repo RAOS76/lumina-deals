@@ -1,10 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Calendar, User, ArrowLeft } from 'lucide-react';
-import ReactMarkdown from 'react-markdown';
 import { Metadata } from 'next';
 
 // Initialize Supabase Client
@@ -15,23 +12,16 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 export const revalidate = 3600; // Revalidate every hour
 
 interface Props {
-    params: { slug: string };
+    params: Promise<{ slug: string }>;
 }
 
 async function getPost(slug: string) {
     const { data: post, error } = await supabase
         .from('posts')
-        .select(`
-            *,
-            authors (
-                name,
-                bio,
-                avatar_url
-            )
-        `)
+        .select('*')
         .eq('slug', slug)
         .eq('published', true)
-        .single();
+        .maybeSingle();
 
     if (error) {
         console.error('Error fetching post:', error);
@@ -42,7 +32,8 @@ async function getPost(slug: string) {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-    const post = await getPost(params.slug);
+    const { slug } = await params;
+    const post = await getPost(slug);
     if (!post) return { title: 'Artículo no encontrado' };
 
     return {
@@ -58,12 +49,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function BlogPostPage({ params }: Props) {
-    const post = await getPost(params.slug);
+    const { slug } = await params;
+    const post = await getPost(slug);
 
     if (!post) {
         return (
             <div className="min-h-screen bg-slate-50 flex flex-col">
-                <Navbar />
                 <main className="flex-1 flex items-center justify-center">
                     <div className="text-center">
                         <h1 className="text-3xl font-bold text-slate-900 mb-4">Artículo no encontrado</h1>
@@ -72,15 +63,12 @@ export default async function BlogPostPage({ params }: Props) {
                         </Link>
                     </div>
                 </main>
-                <Footer />
             </div>
         );
     }
 
     return (
         <div className="min-h-screen bg-slate-50 font-sans selection:bg-indigo-100 selection:text-indigo-900">
-            <Navbar />
-
             <main className="pt-32 pb-20">
                 <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                     {/* Back Link */}
@@ -108,47 +96,42 @@ export default async function BlogPostPage({ params }: Props) {
                             {post.title}
                         </h1>
                         <div className="flex items-center justify-center gap-3">
-                            {post.authors?.avatar_url ? (
-                                <Image
-                                    src={post.authors.avatar_url}
-                                    alt={post.authors.name}
-                                    width={48}
-                                    height={48}
-                                    className="rounded-full border-2 border-white shadow-md"
-                                />
-                            ) : (
-                                <div className="w-12 h-12 rounded-full bg-slate-200 flex items-center justify-center border-2 border-white shadow-md">
-                                    <User className="w-6 h-6 text-slate-500" />
-                                </div>
-                            )}
+                            <div className="w-12 h-12 rounded-full bg-slate-200 flex items-center justify-center border-2 border-white shadow-md">
+                                <User className="w-6 h-6 text-slate-500" />
+                            </div>
                             <div className="text-left">
-                                <p className="text-sm font-bold text-slate-900">{post.authors?.name || 'Equipo Lumina'}</p>
-                                <p className="text-xs text-slate-500">{post.authors?.bio || 'Editor'}</p>
+                                <p className="text-sm font-bold text-slate-900">Equipo Lumina</p>
+                                <p className="text-xs text-slate-500">Editor</p>
                             </div>
                         </div>
                     </header>
 
                     {/* Cover Image */}
                     {post.cover_image && (
-                        <div className="relative aspect-video w-full rounded-2xl overflow-hidden shadow-2xl mb-12">
-                            <Image
-                                src={post.cover_image}
-                                alt={post.title}
-                                fill
-                                className="object-cover"
-                                priority
-                            />
+                        <div className="max-w-2xl mx-auto mb-12">
+                            <div className="relative aspect-video w-full rounded-2xl overflow-hidden shadow-xl">
+                                <Image
+                                    src={post.cover_image}
+                                    alt={post.title}
+                                    fill
+                                    className="object-cover"
+                                    priority
+                                />
+                            </div>
                         </div>
                     )}
 
                     {/* Content */}
-                    <div className="prose prose-lg prose-slate mx-auto prose-headings:font-bold prose-headings:tracking-tight prose-a:text-indigo-600 prose-img:rounded-xl prose-img:shadow-lg bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-slate-100">
-                        <ReactMarkdown>{post.content}</ReactMarkdown>
-                    </div>
+                    <div
+                        className="prose prose-lg prose-slate mx-auto prose-headings:font-bold prose-headings:tracking-tight prose-a:text-indigo-600 prose-img:rounded-xl prose-img:shadow-lg bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-slate-100"
+                        dangerouslySetInnerHTML={{ __html: post.content }}
+                    />
                 </article>
             </main>
-
-            <Footer />
+            <style dangerouslySetInnerHTML={{
+                __html: `
+                @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+            ` }} />
         </div>
     );
 }

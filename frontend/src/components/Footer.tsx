@@ -5,28 +5,30 @@ export default function Footer() {
     return (
         <footer className="bg-black border-t border-white/10 mt-20">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-12">
-                    <div>
-                        <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400 mb-4">
-                            Lumina Ofertas
-                        </h2>
-                        <p className="text-gray-400 max-w-md mb-4">
-                            Tu curador de ofertas impulsado por Inteligencia Artificial. Analizamos miles de productos para traerte solo lo mejor.
-                        </p>
-                        <p className="text-xs text-gray-500">
-                            Como afiliado de Amazon, obtengo ingresos por las compras adscritas que cumplen los requisitos.
-                        </p>
-                    </div>
-                    <div>
-                        <NewsletterForm />
-                    </div>
+                {/* Newsletter Section */}
+                <div className="mb-12 max-w-md mx-auto">
+                    <NewsletterForm />
                 </div>
 
-                <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-                    <p className="text-gray-500 text-sm">
+                {/* Company Info */}
+                <div className="mb-8 text-center md:text-left">
+                    <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400 mb-4">
+                        Lumina Ofertas
+                    </h2>
+                    <p className="text-gray-400 mb-4">
+                        Tu curador de ofertas impulsado por Inteligencia Artificial. Analizamos miles de productos para traerte solo lo mejor.
+                    </p>
+                    <p className="text-xs text-gray-500">
+                        Como afiliado de Amazon, obtengo ingresos por las compras adscritas que cumplen los requisitos.
+                    </p>
+                </div>
+
+                {/* Copyright */}
+                <div className="border-t border-white/10 pt-8 text-center md:text-left">
+                    <p className="text-gray-500 text-sm mb-4">
                         © {new Date().getFullYear()} Lumina Ofertas. Todos los derechos reservados.
                     </p>
-                    <div className="flex space-x-6 mt-4 md:mt-0">
+                    <div className="flex justify-center md:justify-start gap-6">
                         <Link href="/privacy" className="text-sm text-slate-500 hover:text-indigo-600 transition-colors">
                             Política de Privacidad
                         </Link>

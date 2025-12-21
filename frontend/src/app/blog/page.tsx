@@ -1,8 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { createClient } from '@supabase/supabase-js';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
 import { Calendar, User } from 'lucide-react';
 
 // Initialize Supabase Client
@@ -15,13 +13,7 @@ export const revalidate = 3600; // Revalidate every hour
 async function getPosts() {
     const { data: posts, error } = await supabase
         .from('posts')
-        .select(`
-            *,
-            authors (
-                name,
-                avatar_url
-            )
-        `)
+        .select('*')
         .eq('published', true)
         .order('created_at', { ascending: false });
 
@@ -38,8 +30,6 @@ export default async function BlogPage() {
 
     return (
         <div className="min-h-screen bg-slate-50 font-sans selection:bg-indigo-100 selection:text-indigo-900">
-            <Navbar />
-
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-20">
                 <div className="text-center mb-16">
                     <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight mb-4">
@@ -91,21 +81,11 @@ export default async function BlogPage() {
                                             {post.excerpt}
                                         </p>
                                         <div className="flex items-center gap-3 pt-4 border-t border-slate-100 mt-auto">
-                                            {post.authors?.avatar_url ? (
-                                                <Image
-                                                    src={post.authors.avatar_url}
-                                                    alt={post.authors.name}
-                                                    width={24}
-                                                    height={24}
-                                                    className="rounded-full"
-                                                />
-                                            ) : (
-                                                <div className="w-6 h-6 rounded-full bg-slate-200 flex items-center justify-center">
-                                                    <User className="w-3 h-3 text-slate-500" />
-                                                </div>
-                                            )}
+                                            <div className="w-6 h-6 rounded-full bg-slate-200 flex items-center justify-center">
+                                                <User className="w-3 h-3 text-slate-500" />
+                                            </div>
                                             <span className="text-xs font-medium text-slate-700">
-                                                {post.authors?.name || 'Equipo Lumina'}
+                                                Equipo Lumina
                                             </span>
                                         </div>
                                     </div>
@@ -115,8 +95,6 @@ export default async function BlogPage() {
                     </div>
                 )}
             </main>
-
-            <Footer />
         </div>
     );
 }

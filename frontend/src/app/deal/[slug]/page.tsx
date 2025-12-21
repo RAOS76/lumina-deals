@@ -41,7 +41,7 @@ async function getProduct(slug: string) {
         .from('products')
         .select('*')
         .eq('slug', slug)
-        .single();
+        .maybeSingle();
 
     if (error) {
         console.error(`[DealPage] Error fetching product:`, error);
@@ -91,24 +91,11 @@ export default async function DealPage({ params }: { params: Promise<{ slug: str
 
     return (
         <main className="min-h-screen bg-slate-50 pb-20 pt-20">
-            {/* Header / Nav */}
-            <header className="bg-white border-b border-slate-200 sticky top-20 z-10">
-                <div className="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
-                    <Link href="/" className="flex items-center gap-2 text-slate-600 hover:text-indigo-600 transition-colors">
-                        <ArrowLeft className="w-5 h-5" />
-                        <span className="font-medium">Volver al feed</span>
-                    </Link>
-                    <div className="flex items-center gap-2">
-                        {product.lumina_score && (
-                            <span className="flex items-center gap-1 font-bold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full text-sm border border-indigo-100">
-                                Lumina Score: {product.lumina_score}
-                            </span>
-                        )}
-                    </div>
-                </div>
-            </header>
-
-            <article className="max-w-4xl mx-auto px-4 py-8">
+            <div className="max-w-4xl mx-auto px-4 py-8">
+                <Link href="/" className="inline-flex items-center gap-2 text-slate-500 hover:text-indigo-600 mb-6 transition-colors group">
+                    <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+                    Volver al feed
+                </Link>
                 <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
 
                     {/* Hero Section */}
@@ -240,7 +227,7 @@ export default async function DealPage({ params }: { params: Promise<{ slug: str
                         </div>
                     </div>
                 </div>
-            </article>
+            </div>
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{

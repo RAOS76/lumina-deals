@@ -9,21 +9,31 @@ export default function NewsletterPopup() {
     const [shouldRender, setShouldRender] = useState(false);
 
     useEffect(() => {
-        // Check if already seen
-        // Cambiamos la key para forzar que salga de nuevo en esta versión
         const hasSeenPopup = localStorage.getItem('lumina_newsletter_v2');
+        if (hasSeenPopup) return;
 
-        if (!hasSeenPopup) {
-            // Show after 2 seconds (faster for testing)
-            const timer = setTimeout(() => {
+        const handleScroll = () => {
+            const scrollY = window.scrollY;
+            const windowHeight = window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight;
+
+            // Show after scrolling 20% of the page
+            // But hide if we are near the bottom (where the footer is)
+            const isNearBottom = scrollY + windowHeight > documentHeight - 600;
+            const hasScrolledEnough = scrollY > windowHeight * 0.2;
+
+            if (hasScrolledEnough && !isNearBottom && !shouldRender) {
                 setShouldRender(true);
-                // Small delay for animation
                 setTimeout(() => setIsVisible(true), 100);
-            }, 2000);
+            } else if (isNearBottom && isVisible) {
+                setIsVisible(false);
+                setTimeout(() => setShouldRender(false), 300);
+            }
+        };
 
-            return () => clearTimeout(timer);
-        }
-    }, []);
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, [shouldRender, isVisible]);
 
     const handleClose = () => {
         setIsVisible(false);
