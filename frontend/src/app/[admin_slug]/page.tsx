@@ -9,7 +9,7 @@ export default async function AdminLoginPage({
     params: Promise<{ admin_slug: string }>;
 }) {
     const { admin_slug } = await params;
-    const secretRoute = process.env.NEXT_PUBLIC_ADMIN_ROUTE_SECRET;
+    const secretRoute = process.env.NEXT_PUBLIC_ADMIN_ROUTE_SECRET || 'lumina-ops-secure-8x92';
 
     // 1. Validate Route Secret
     if (admin_slug !== secretRoute) {

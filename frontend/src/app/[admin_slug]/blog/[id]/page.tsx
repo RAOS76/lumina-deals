@@ -26,7 +26,7 @@ export default async function EditPostPage({
         .from('posts')
         .select('*')
         .eq('id', id)
-        .single();
+        .maybeSingle();
 
     if (!post) {
         notFound();

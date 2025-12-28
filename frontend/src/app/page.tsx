@@ -7,6 +7,17 @@ import CookieBanner from '../components/CookieBanner';
 import AdPlaceholder from '../components/AdPlaceholder';
 import { Sparkles } from 'lucide-react';
 import { Suspense } from 'react';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Lumina Ofertas | Inteligencia Artificial para Cazadores de Ofertas',
+    description: 'Descubre las mejores ofertas de Amazon curadas por IA. Lumina analiza precios, reseñas y calidad para que compres inteligente.',
+    openGraph: {
+        title: 'Lumina Ofertas | Inteligencia Artificial para Cazadores de Ofertas',
+        description: 'Descubre las mejores ofertas de Amazon curadas por IA.',
+        images: ['/icon.svg'],
+    },
+};
 
 // Inicializar cliente Supabase (usando vars públicas para el cliente)
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;

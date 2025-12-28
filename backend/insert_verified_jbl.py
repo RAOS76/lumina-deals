@@ -44,10 +44,10 @@ product = {
     "updated_at": datetime.now().isoformat()
 }
 
-print(f"Inserting verified product: {product['clean_title']}...")
+print(f"Upserting verified product: {product['clean_title']}...")
 
 try:
-    data, count = supabase.table("products").insert(product).execute()
-    print("Success! Product inserted.")
+    data, count = supabase.table("products").upsert(product, on_conflict="amazon_id").execute()
+    print("Success! Product updated.")
 except Exception as e:
     print(f"Error: {e}")
