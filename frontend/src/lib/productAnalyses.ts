@@ -1181,5 +1181,63 @@ export const productAnalyses: Record<string, {
         },
         verdict: "Un accesorio inteligente que mejora la experiencia del iPad sin ocultar su diseño. Por $17.99, obtienes protección sólida, Auto Sleep/Wake confiable y versatilidad tri-fold que supera opciones 4x más caras. Si tienes iPad 11\" y quieres mostrar su diseño original mientras lo proteges, esta es la elección obvia.",
         rating: 8.9
+    },
+    "set-equipaje-concepten-5-piezas-verified": {
+        fullAnalysis: `
+            <h2>🧳 Set de Equipaje CONCEPTEN 5 Piezas: La Solución Completa para Viajeros</h2>
+            
+            <p>El <strong>Set de Equipaje CONCEPTEN de 5 Piezas</strong> en elegante color rosa ofrece una solución completa que combina estilo, durabilidad y funcionalidad a un precio excepcional de $97.74.</p>
+
+            <h3>📦 ¿Qué Incluye?</h3>
+            <ul>
+                <li><strong>Maleta Grande (28"):</strong> Ideal para viajes largos, ~90L</li>
+                <li><strong>Maleta Mediana (24"):</strong> Viajes de 5-7 días, ~70L</li>
+                <li><strong>Maleta Pequeña (20"):</strong> Carry-on aprobado, ~40L</li>
+                <li><strong>Bolsa de Viaje + Neceser:</strong> Organización completa</li>
+            </ul>
+
+            <h3>🛡️ Material ABS Resistente</h3>
+            <p>Resistencia a impactos, 30% más liviano que policarbonato, flexible y económico.</p>
+
+            <h3>🔄 Ruedas Spinner 360°</h3>
+            <p>Movilidad sin esfuerzo en cualquier dirección. Ruedas reforzadas soportan hasta 50kg.</p>
+
+            <h3>🔒 Candado TSA</h3>
+            <p>Seguridad aprobada para viajes a USA. Evita multas y daños en inspecciones.</p>
+
+            <h3>💰 Valor Excepcional</h3>
+            <p><strong>$97.74</strong> = <strong>$19.55 por pieza</strong></p>
+            <p>Ahorra $202 vs. Samsonite (67% menos) con 2 piezas adicionales.</p>
+        `,
+        keyFeatures: [
+            "Set completo de 5 piezas: 3 maletas + bolsa + neceser",
+            "Ruedas giratorias 360° spinner",
+            "Candado TSA integrado",
+            "Material ABS resistente y ligero",
+            "Maleta 20\" carry-on aprobada",
+            "Capacidad total ~200L",
+            "Color rosa elegante",
+            "Precio: $19.55 por pieza"
+        ],
+        prosAndCons: {
+            pros: [
+                "Precio excepcional: $19.55/pieza",
+                "Set completo para toda la familia",
+                "Ruedas spinner 360°",
+                "Candado TSA incluido",
+                "Material ABS resistente",
+                "Carry-on aprobado",
+                "Fácil identificación en aeropuertos"
+            ],
+            cons: [
+                "Solo disponible en rosa",
+                "ABS menos premium que policarbonato",
+                "Sin garantía de por vida",
+                "Ruedas spinner menos efectivas en terreno irregular",
+                "Peso moderado"
+            ]
+        },
+        verdict: "Valor imbatible para familias y viajeros. Por $97.74 obtienes 5 piezas con características premium: ruedas spinner, candado TSA y material resistente. Ahorra $200+ vs. marcas premium sin sacrificar funcionalidad esencial.",
+        rating: 8.8
     }
 };
